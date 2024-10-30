@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capybird</title>
+  </head>
+  <body>
+    
+    <header>
+      
+    </header>
+    <main>
+      <canvas id="gameCanvas"></canvas>
+      <!------------- Start Screen --------->
+      <div id="gameStart" class="gameUI">
+        <h1> Capybird</h1>
+        <div id="login">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username">
+
+          <label for="password">Password:</label>
+          <input type="text" id="password" name="password">
+          <br>
+          <br>
+        </div>
+        
+        <!-----------The Start Screen Buttons-------->
+        <div id="startScreenButton">
+
+            <button type="button" id="start">Start</button>
+            <button type="button" id="leaderboard_button">Leaderboard</button>
+            <button type="button" id="custom">Custom</button>
+        </div>
+      </div>
+      <!-------------The End Screen -------->
+      <div id="gameEnd" class="gameUI">
+        <p>Game over</p>
+        <h1>You <span ID="gameWinLoseSpan"></span></h1>
+        <h1>Final Score: <span id = gameEndScoreSpan> </span></h1>
+        <button type="button" id="restart">Restart</button>
+      </div>
+        <!--The leaderboard Screen-->
+        <div id="leaderboard" class="gameUI">
+          <div class="row">
+              <div class="name">Player1</div><div class="score">430</div>
+          </div>
+          
+          <div class="row">
+              <div class="name">Player2</div><div class="score">580</div>
+          </div>
+          
+          <div class="row">
+              <div class="name">Player3</div><div class="score">310</div>
+          </div>
+          
+          <div class="row">
+              <div class="name">Player4</div><div class="score">640</div>
+          </div>
+          
+          <div class="row">
+              <div class="name">Player5</div><div class="score">495</div>
+          </div>
+          <div id="exit_leaderboard">
+            <button type="button">Exit</button>
+          </div>
+      </div>
+
+
+
+
+      
+    </main>
+    <div id="app"></div>
+    <footer>
+      <p> Created by Steve,Hamza,Shaheer and Hugh</p>
+    </footer>
+    <script type="module" src="/main.js"></script>
+    
+  </body>
+</html>
