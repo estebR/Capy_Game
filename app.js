@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const http = require('http');
 const fs= require('fs');
 const url= require('url');
@@ -6,21 +5,58 @@ const path= require('path');
 sendFile = function (reqObj, resObj) {
         let fileName = url.parse(reqObj.url,true);
         console.log(reqObj.url);
-	//We add a parameter for the object
-	if (fileName.pathname==="/"){
-		fileName.pathname="/index.html"
-	}
-	else {
-		fileName.pathname=fileName.pathname
-	}
-	console.log(fileName.pathname);
-
+        //We add a parameter for the object
+        if (fileName.pathname==="/"){
+                fileName.pathname="/index.html"
+        }
+        else {
+                fileName.pathname=fileName.pathname
+        }
         fs.readFile("."+fileName.pathname,function(err, data){
-		readData(err,data,fileName,resObj);
-	});
+                readData(err,data,fileName,resObj);
+        });
 };
 //Function to get all types of file in different directories
 function getContentType(x){
-=======
->>>>>>> 29e809fd7626b62c4a7e9dab486724788bc8172c
 
+        switch(path.extname(x)){
+
+        case ".html":
+                return "text/html";
+
+        case ".jpg":
+                return "image/jpeg";
+        case ".png":
+                return "image/png";
+        case ".wav":
+                return "audio/wav";
+
+        case ".mp3":
+                return "audio/mpeg";
+
+        case ".css":
+                return "text/css";
+
+        case ".js":
+                return "text/javascript";
+
+        case ".txt":
+                return "text/plain";
+        }
+}
+//Function to output the dat inside the file we are using
+function readData(err,data,fileName,resObj){
+        if (err) {
+                        resObj.writeHead(404, {"Content-Type":"text/plain"});
+                        resObj.write("404 not found");
+                        resObj.end();
+                }
+        else{
+                        resObj.writeHead(200,{"Content-Type":getContentType(fileName.pathname)});
+                        resObj.write(data);
+                        resObj.end();
+
+                }
+};
+const myserver = http.createServer(sendFile); //create a server object
+myserver.listen(80, function() {console.log("Listening on port 80" )});
