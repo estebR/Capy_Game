@@ -13,6 +13,7 @@ sendFile = function (reqObj, resObj) {
 		fileName.pathname=fileName.pathname
 	}
 	console.log(fileName.pathname);
+
         fs.readFile("."+fileName.pathname,function(err, data){
 		readData(err,data,fileName,resObj);
 	});
