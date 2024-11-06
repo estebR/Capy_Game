@@ -130,8 +130,12 @@ h1{
 }
 
 .login{
-  display:none;
-
+  .fixed-element {
+    display:none;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
 
   /*sHAHEER WORK ON THIS*/
 }
