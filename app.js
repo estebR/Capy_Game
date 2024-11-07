@@ -12,7 +12,7 @@ sendFile = function (reqObj, resObj) {
         else {
                 fileName.pathname=fileName.pathname
         }
-        fs.readFile("."+fileName.pathname,function(err, data){
+        fs.readFile("./game"+fileName.pathname,function(err, data){
                 readData(err,data,fileName,resObj);
         });
 };
@@ -42,6 +42,9 @@ function getContentType(x){
 
         case ".txt":
                 return "text/plain";
+	default:
+		return "application/octet-stream";
+
         }
 }
 //Function to output the dat inside the file we are using

@@ -1,5 +1,4 @@
-import './style.css'
-import Phaser from '/phaser'
+
 import elementIDSListener from './event_listeners.js'
 
 
@@ -19,7 +18,9 @@ class GameScene extends Phaser.Scene{
     //This will act as a variable for the Cpaybara image
     this.player
     this.cursor
-    this.speedDown+50
+    this.playerSpeed=175;
+    this.jumpVelocity=-400;
+
   }
   
   //Initizates the image
@@ -42,12 +43,12 @@ class GameScene extends Phaser.Scene{
     //Change the size of the player
     player.setDisplaySize(40,40)
 
-    //For now so we can see where the image is on the canvas but change!!!
-    this.player.body.allowGravity = false
-
+    //For now so we can see where the image is on the cnavas but change!!!
+    this.player.body.allowGravity = true
+    
     this.player.setCollideWorldBounds(true) //set bounds
 
-    TouchList.cursor = this.input.keyboard.createCursorKeys()
+    this.cursor = this.input.keyboard.createCursorKeys()
 
 
 
@@ -55,7 +56,7 @@ class GameScene extends Phaser.Scene{
 
   }
   update(){
-    const { left, right } = this.cursor;
+    const { left, right, up} = this.cursor;
     if (left.isDown) {
       this.player.setVelocityX(-this.playerSpeed);
     } else if (right.isDown) {
@@ -63,11 +64,17 @@ class GameScene extends Phaser.Scene{
     } else {
       this.player.setVelocityX(0);
     }
+   if (up.isDown) {
+    this.player.setVelocityY(-this.playerSpeed)
+   }
+   
     //THis is the gameover function
     
   }
   gameOver(){
+    this.scene.pause("scene-game")
     this.sys.game.destroy(true)
+
   }
 }
 
