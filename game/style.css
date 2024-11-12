@@ -91,10 +91,26 @@ main{
 button {
   margin: 10%;
   width: 100%;
-  height:100%;
-  
-
+  height: 80%;
+  background-color: #04AA6D; /* Green */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
 }
+
+button:hover {
+  background-color: yellow; /* Light green */
+  color: black; /* Change text color on hover */
+}
+
+
 
 h1{
   text-align: center;
