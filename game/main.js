@@ -20,13 +20,15 @@ class GameScene extends Phaser.Scene{
     this.cursor
     this.playerSpeed=175;
     this.jumpVelocity=-400;
+    this.target
 
   }
   
   //Initizates the image
   preload(){
-    this.load.image("background","/BG.png")
-    this.load.image("capybird","Capybird.png")
+    this.load.image("background", "./images/BG.png")
+    this.load.image("capybird", "./images/Capybird.png")
+    this.load.image("Obstacle", "./images/Obstacle.png")
   }
   create(){
     //This will pause the game unitl the player clicks the start button
@@ -49,13 +51,28 @@ class GameScene extends Phaser.Scene{
     this.player.setCollideWorldBounds(true) //set bounds
 
     this.cursor = this.input.keyboard.createCursorKeys()
+    //target settings
 
+    
 
+    this.target= this.physics.add
+      .image(0, 0, "Obstacle")
+      .setOrigin(0, 0)
+      .setDisplaySize(30,30)
+      this.target.setMaxVelocity(0, speedDown);
 
+    this.physics.add.overlap(this.target, this.player, this.targetHit, null, this)
 
 
   }
   update(){
+
+    if(this.target.y >= sizes.height) {
+      this.target.setY(0);
+      this.target.setX(this.getRandomX());
+      }
+      
+    // player movement
     const { left, right, up} = this.cursor;
     if (left.isDown) {
       this.player.setVelocityX(-this.playerSpeed);
@@ -67,10 +84,17 @@ class GameScene extends Phaser.Scene{
    if (up.isDown) {
     this.player.setVelocityY(-this.playerSpeed)
    }
-   
-    //THis is the gameover function
-    
+
   }
+  getRandomX() { 
+    return Math.floor(Math.random() * 480);
+  }
+  
+  targetHit() {
+    this.target.setY(0);
+    this.target.setX(this.getRandomX);
+  }
+    
   gameOver(){
     this.scene.pause("scene-game")
     this.sys.game.destroy(true)
