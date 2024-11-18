@@ -93,6 +93,7 @@ class GameScene extends Phaser.Scene{
   targetHit() {
     this.target.setY(0);
     this.target.setX(this.getRandomX);
+    this.gameOver()
   }
     
   gameOver(){
