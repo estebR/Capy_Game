@@ -151,3 +151,55 @@ h1{
 
   /*sHAHEER WORK ON THIS*/
 }
+
+/*This is the customize screen css*/
+
+#customize{
+  display: none;
+}
+#customize_options{
+  display: none;
+  margin-top: 200px;
+  justify-content: space-between;
+}
+#background_screen{
+  display:none;
+  flex-wrap: wrap;
+  gap:10px;
+}
+
+.customize_background{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+.customize_capybird{
+  display: none;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.box img {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid #000;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+#exit_customize {
+  margin-top: 20px;
+  padding: 15px 30px;
+  font-size: 1.2em;
+}
+
+button:hover {
+  background-color: #f1f1f1;
+  transition: background-color 0.3s;
+}
