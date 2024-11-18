@@ -52,23 +52,24 @@ function elementIDSListener(game){
         customize.style.display = "block";
         gameStart.style.display = "none";
         customize_options.style.display = "block";
+        background_screen.style.display = "none";
         
     });
     background_button.addEventListener("click",()=>{
         gameStart.style.display = "none";
         customize.style.display = "block";
         customize_options.style.display = "none";
-        background_screen.style.display="flex"  
+        background_screen.style.display="block" ; 
 
-        capybird_screen.style.display="none" 
+        capybird_screen.style.display="none"; 
     });
     capybird_button.addEventListener("click",()=>{
         gameStart.style.display = "none";
         customize.style.display = "block";
         customize_options.style.display = "none";
 
-        background_screen.style.display="none" 
-        capybird_screen.style.display="flex"  
+        background_screen.style.display="none"; 
+        capybird_screen.style.display="block" ; 
     });
     
     exit_customize.addEventListener("click",()=>{
