@@ -9,13 +9,14 @@ const sizes={
   height:500
 }
 
+
 const speedDown =300
 
 
 class GameScene extends Phaser.Scene{
   constructor(){
     super("scene-game")
-    //This will act as a variable for the Cpaybara image
+    //This will act as a variable for the Capybara image
     this.player
     this.cursor
     this.playerSpeed=175;
@@ -104,6 +105,8 @@ class GameScene extends Phaser.Scene{
   gameOver(){
     this.scene.pause("scene-game")
     this.sys.game.destroy(true)
+    gameEndScoreSpan.textContent = "You Lose!!!"
+
 
   }
 }
