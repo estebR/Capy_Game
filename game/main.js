@@ -22,6 +22,7 @@ class GameScene extends Phaser.Scene{
     this.playerSpeed=175;
     this.jumpVelocity=-400;
     this.target
+    this.bgMusic
 
   }
   
@@ -30,6 +31,7 @@ class GameScene extends Phaser.Scene{
     this.load.image("background", "./images/BG.png")
     this.load.image("capybird", "./images/Capybird.png")
     this.load.image("Obstacle", "./images/Obstacle.png")
+    this.load.audio("bgMusic", "./Audio/bgmusic.mp3")
   }
   create(){
     //This will pause the game unitl the player clicks the start button
@@ -53,6 +55,9 @@ class GameScene extends Phaser.Scene{
 
     this.cursor = this.input.keyboard.createCursorKeys()
     //target settings
+
+    this.bgMusic = this.sound.add("bgMusic")
+    this.bgMusic.play() //play
 
     
 
