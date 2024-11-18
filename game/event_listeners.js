@@ -1,5 +1,16 @@
 //Function to call in main.js
 function elementIDSListener(game){
+
+    const gameStart = document.querySelector("#gameStart")
+    const gameEnd = document.querySelector("#gameEnd")
+    const start_button = document.querySelector("#start")
+    const leaderboard_button = document.querySelector("#leaderboard_button")
+    const custom_button = document.querySelector("#custom")
+    const win_lose = document.querySelector("#gameWinLoseSpan")
+    const score = document.querySelector("#gameEndScoreSpan")
+    const leaderboard = document.querySelector("#leaderboard");
+    const exit_leaderboard = document.querySelector("#exit_leaderboard")
+
     const gameStart=document .querySelector("#gameStart")
     const gameEnd=document .querySelector("#gameEnd")
 
@@ -19,6 +30,7 @@ function elementIDSListener(game){
     //Exit buttons for in screen
     const exit_leaderboard=document.querySelector("#exit_leaderboard")
     const exit_customize=document.querySelector("#exit_customize")
+
 
     //The buttons that are inside when initially clikc the 
     //Customize button
@@ -52,23 +64,24 @@ function elementIDSListener(game){
         customize.style.display = "block";
         gameStart.style.display = "none";
         customize_options.style.display = "block";
+        background_screen.style.display = "none";
         
     });
     background_button.addEventListener("click",()=>{
         gameStart.style.display = "none";
         customize.style.display = "block";
         customize_options.style.display = "none";
-        background_screen.style.display="flex"  
+        background_screen.style.display="block" ; 
 
-        capybird_screen.style.display="none" 
+        capybird_screen.style.display="none"; 
     });
     capybird_button.addEventListener("click",()=>{
         gameStart.style.display = "none";
         customize.style.display = "block";
         customize_options.style.display = "none";
 
-        background_screen.style.display="none" 
-        capybird_screen.style.display="flex"  
+        background_screen.style.display="none"; 
+        capybird_screen.style.display="block" ; 
     });
     
     exit_customize.addEventListener("click",()=>{

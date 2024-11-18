@@ -62,4 +62,4 @@ function readData(err,data,fileName,resObj){
                 }
 };
 const myserver = http.createServer(sendFile); //create a server object
-myserver.listen(80, function() {console.log("Listening on port 80" )});
+myserver.listen(3000, function() {console.log("Listening on port 80" )});

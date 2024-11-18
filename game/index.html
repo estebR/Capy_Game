@@ -1,9 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    
-    
-
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.ico" />
     <link rel="stylesheet" href="style.css">
@@ -31,7 +28,14 @@
           <br>
           <br>
         </div>
-        
+        <!------------- End Screen --------->
+        <div id="gameEnd" class="gameUI">
+          <p>Game over</p>
+          <h1>You <span ID="gameWinLoseSpan"></span></h1>
+          <h1>Final Score: <span id = gameEndScoreSpan> </span></h1>
+          <button type="button" id="restart">Restart</button>
+
+        </div>
         <!-----------The Start Screen Buttons-------->
         <div id="startScreenButton">
 
@@ -72,6 +76,8 @@
             <button type="button">Exit</button>
           </div>
       </div>
+
+      <!-----------------------------------------------------Cuzotmize screen--------------------------------------------------------------->
       <div id="customize" class="gameUI">
         <h2>Customize Your Game</h2>
 
@@ -85,30 +91,30 @@
         <div class="customize_background">
           <div class="box" id="box1">
             <img src="" alt="Background 1">
-            <button type="button" id="btnBackground1">Background 1</button>
+            <button type="button" id="btn">Background 1</button>
           </div>
           <div class="box" id="box2">
             <img src="" alt="Background 2">
-            <button type="button" id="btnBackground2">background 2</button>
+            <button type="button" id="btn">background 2</button>
           </div>
           <div class="box" id="box3">
             <img src="" alt="Background 3">
-            <button type="button" id="btnBackground3">background 3</button>
+            <button type="button" id="btn">background 3</button>
           </div>
         </div>
         <!---------- The screen or layout when clicking the Capybird button-------->
         <div class="customize_capybird">
           <div class="box" id="box1">
             <img src="" alt="Cap 1">
-            <button type="button" id="btnCapybird1">Skin 1</button>
+            <button type="button" id="btn">Skin 1</button>
           </div>
           <div class="box" id="box2">
             <img src="" alt="Cap 2">
-            <button type="button" id="btnCapybird2">Skin 2</button>
+            <button type="button" id="btn">Skin 2</button>
           </div>
           <div class="box" id="box3">
             <img src="" alt="Cap 3">
-            <button type="button" id="btnCapybird3">Skin 3</button>
+            <button type="button" id="btn">Skin 3</button>
           </div>
         </div>
         
