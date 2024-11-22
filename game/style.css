@@ -135,6 +135,7 @@ h1{
 	border-bottom: 1px solid #AFAFAF;
   align-items: center;
   justify-content: center;
+
 }
 
 .name {
@@ -144,15 +145,14 @@ h1{
 	line-height: 45px;
   align-items: center;
   justify-content: center;
-
 }
 
 .score {
 	position: relative;
 	display: flex;
-	width: 25%;
   align-items: center;
   justify-content: center;
+	width: 25%;
 }
 
 #login {
@@ -160,6 +160,9 @@ h1{
   position: fixed;
   top: 110px;
   right: 235px;
+
+
+  /*sHAHEER WORK ON THIS*/
 }
 
 /*This is the customize screen css*/
@@ -218,10 +221,7 @@ h1{
   width:50%;
 }
 
-button:hover {
-  background-color: #f1f1f1;
-  transition: background-color 0.3s;
-}
+
 h2{
   text-align: center;
   margin-top:5%;
