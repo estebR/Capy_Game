@@ -3,6 +3,7 @@ function elementIDSListener(game) {
     // Start and End screens
     const gameStart = document.querySelector("#gameStart");
     const gameEnd = document.querySelector("#gameEnd");
+    
 
     // Start screen buttons
     const startButton = document.querySelector("#start");
@@ -11,8 +12,8 @@ function elementIDSListener(game) {
 
     // Game end screen
     const winLoseSpan = document.querySelector("#gameWinLoseSpan");
-    const scoreSpan = document.querySelector("#gameEndScoreSpan");
-
+    const scoreSpan = document.querySelector("#gameEndScoreSpan");    
+    const restart = document.querySelector("#restart");
     // Leaderboard and customization
     const leaderboard = document.querySelector("#leaderboard");
     const customize = document.querySelector("#customize");
@@ -30,7 +31,10 @@ function elementIDSListener(game) {
     const backgroundScreen = document.querySelector("#customize_background");
     const capybirdScreen = document.querySelector("#customize_capybird");
 
+
+    
     // Event listeners for each button
+
 
     // Start button
     startButton.addEventListener("click", () => {
@@ -79,6 +83,13 @@ function elementIDSListener(game) {
         customize.style.display = "none";
         customizeOptions.style.display = "none";
         gameStart.style.display = "block";
+    });
+    //----------------------------The game end mechanics------------
+    restart.addEventListener("click", () => {
+        game.scene.stop("scene-game")
+        game.scene.start("scene-game")
+        gameEnd.style.display="none"
+        gameStart.style.display="block"
     });
 }
 

@@ -9,20 +9,21 @@ const sizes={
   height:500
 }
 
-
 const speedDown =300
 
 
 class GameScene extends Phaser.Scene{
   constructor(){
     super("scene-game")
-    //This will act as a variable for the Capybara image
+    //This will act as a variable for the Cpaybara image
     this.player
     this.cursor
     this.playerSpeed=175;
     this.jumpVelocity=-400;
     this.target
     this.bgMusic
+    this.textScore
+    this.score=0;
 
   }
   
@@ -69,6 +70,22 @@ class GameScene extends Phaser.Scene{
 
     this.physics.add.overlap(this.target, this.player, this.targetHit, null, this)
 
+    //-------------------The score displayment and runtime-----------------
+    this.textScore= this.add.text(sizes.width-120,10,"Score:0",{
+      font: "20px Arial",
+      fill: "#000000",
+    })
+    this.time.addEvent({ delay:1000, callback:()=>{
+        this.score +=100
+        this.textScore.setText(`Score: ${this.score}`);
+    },
+    loop:true,
+  });
+    
+
+    
+    
+
 
   }
   update(){
@@ -92,21 +109,34 @@ class GameScene extends Phaser.Scene{
    }
 
   }
+    //The random generator for obstacles 
   getRandomX() { 
     return Math.floor(Math.random() * 480);
   }
   
   targetHit() {
+
     this.target.setY(0);
-    this.target.setX(this.getRandomX);
+    this.target.setX(this.getRandomX());
     this.gameOver()
+
   }
     
-  gameOver(){
-    this.scene.pause("scene-game")
-    this.sys.game.destroy(true)
-    gameEndScoreSpan.textContent = "You Lose!!!"
 
+  gameOver(){
+    this.sys.game.destroy(true)
+    
+    scoreSpan.textContent=this.score
+    winLoseSpan.textContent= "bruh!!!"
+
+    gameEnd.style.display="flex"
+    gameStart.style.display = "none";
+   
+
+
+      
+
+    
 
   }
 }
