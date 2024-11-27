@@ -47,21 +47,6 @@ function elementIDSListener(game) {
         console.log("Leaderboard button clicked");
         gameStart.style.display = "none";
         leaderboard.style.display = "block";
-	 // Fetch leaderboard data from server
-  	fetch('/get-leaderboard')
-    		.then(response => response.json())
-    		.then(data => {
-      			const leaderboardDiv = document.querySelector('#leaderboard');
-    		  	leaderboardDiv.innerHTML = '';  // Clear existing leaderboard
-     		        data.forEach((entry, index) => {
-        			const row = document.createElement('div');
-     			        row.classList.add('row');
-        			row.innerHTML = `<div class="name">${entry.username}</div><div class="score">${entry.score}</div>`;
-       				leaderboardDiv.appendChild(row);
-      			});
-  		})
-    		.catch(error => {
-     			 console.error('Error fetching leaderboard:', error);
     });
 
 
