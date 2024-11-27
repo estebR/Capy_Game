@@ -118,16 +118,27 @@ class GameScene extends Phaser.Scene{
 
     this.target.setY(0);
     this.target.setX(this.getRandomX());
-    this.gameOver()
+    this.gameOver();
 
   }
     
 
   gameOver(){
-    this.sys.game.destroy(true)
-    
-    scoreSpan.textContent=this.score
-    winLoseSpan.textContent= "bruh!!!"
+
+    const finalScore = this.score;
+
+    this.scene.pause("scene-game");
+
+    this.score = 0;
+
+    // Update the Game Over screen with the score and message
+    const gameEnd = document.querySelector("#gameEnd");
+    const gameStart = document.querySelector("#gameStart");
+    const scoreSpan = document.querySelector("#gameEndScoreSpan");
+    const winLoseSpan = document.querySelector("#gameWinLoseSpan");
+
+    scoreSpan.textContent= finalScore
+    winLoseSpan.textContent= "Lose!!!"
 
     gameEnd.style.display="flex"
     gameStart.style.display = "none";

@@ -1,7 +1,9 @@
 const http = require('http');
-const fs= require('fs');
-const url= require('url');
-const path= require('path');
+const mysql = require('mysql2');
+const fs = require('fs');
+const url = require('url');
+const path = require('path');
+
 sendFile = function (reqObj, resObj) {
         let fileName = url.parse(reqObj.url,true);
         console.log(reqObj.url);
@@ -30,8 +32,7 @@ function getContentType(x){
                 return "image/png";
         case ".wav":
                 return "audio/wav";
-
-        case ".mp3":
+	case ".mp3":
                 return "audio/mpeg";
 
         case ".css":
@@ -58,8 +59,7 @@ function readData(err,data,fileName,resObj){
                         resObj.writeHead(200,{"Content-Type":getContentType(fileName.pathname)});
                         resObj.write(data);
                         resObj.end();
-
-                }
+	}
 };
 const myserver = http.createServer(sendFile); //create a server object
-myserver.listen(3000, function() {console.log("Listening on port 80" )});
+myserver.listen(80, function() {console.log("Listening on port 80" )});

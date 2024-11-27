@@ -49,6 +49,8 @@ function elementIDSListener(game) {
         leaderboard.style.display = "block";
     });
 
+
+  
     // Exit leaderboard button
     exitLeaderboardButton.addEventListener("click", () => {
         leaderboard.style.display = "none";
