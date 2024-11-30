@@ -42,9 +42,29 @@ function elementIDSListener(game) {
         game.scene.resume("scene-game");
     });
 
+// Function to fetch leaderboard data
+    function fetchLeaderboard() {
+    	fetch('/api/leaderboard')
+        	.then(response => response.json())
+        	.then(data => {
+            		const leaderboard = document.querySelector("#leaderboard");
+            		leaderboard.innerHTML = ""; // Clear existing entries
+            		data.forEach((entry, index) => {
+                		const row = document.createElement("div");
+                		row.classList.add("row");
+                		row.innerHTML = `
+                    			<div class="name">${index + 1}. ${entry.player_name}</div>
+                    			<div class="score">${entry.score}</div>
+                		`;
+                		leaderboard.appendChild(row);
+            		});
+        	})
+        	.catch(err => console.error("Error fetching leaderboard:", err));
+    }
     // Leaderboard button
     leaderboardButton.addEventListener("click", () => {
         console.log("Leaderboard button clicked");
+	fetchLeaderboard();
         gameStart.style.display = "none";
         leaderboard.style.display = "block";
     });

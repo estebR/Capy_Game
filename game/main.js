@@ -126,9 +126,23 @@ class GameScene extends Phaser.Scene{
   gameOver(){
 
     const finalScore = this.score;
+    const playerName = document.querySelector("#username").value || "Anonymous";
 
     this.scene.pause("scene-game");
+    fetch('/api/submit-score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player_name: playerName, score: finalScore })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("Score submitted successfully!");
+        }
+    })
+    .catch(err => console.error("Error submitting score:", err));
 
+    // Reset score and show Game Over screen
     this.score = 0;
 
     // Update the Game Over screen with the score and message
