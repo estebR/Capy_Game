@@ -38,8 +38,13 @@ function elementIDSListener(game) {
 
     // Start button
     startButton.addEventListener("click", () => {
+	const gameScene = game.scene.getScene("scene-game");
         gameStart.style.display = "none";
         game.scene.resume("scene-game");
+
+	if (gameScene.bgMusic && !gameScene.bgMusic.isPlaying) {
+		gameScene.bgMusic.play();
+	}
     });
 
 // Function to fetch leaderboard data
