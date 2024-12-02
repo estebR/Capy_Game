@@ -2,6 +2,10 @@
 import elementIDSListener from './event_listeners.js'
 
 
+const gameStart = document.querySelector("#gameStart");
+const gameEnd = document.querySelector("#gameEnd");
+const scoreSpan = document.querySelector("#gameEndScoreSpan");
+const winLoseSpan = document.querySelector("#gameWinLoseSpan");
 //An object that will hold the width and height of
 //the game screen
 const sizes={
@@ -105,7 +109,7 @@ class GameScene extends Phaser.Scene{
       this.player.setVelocityX(0);
     }
    if (up.isDown) {
-    this.player.setVelocityY(-this.playerSpeed)
+    this.player.setVelocityY(-this.playerSpeed);
    }
 
   }
@@ -115,7 +119,7 @@ class GameScene extends Phaser.Scene{
   }
   
   targetHit() {
-
+    console.log("hitttt")
     this.target.setY(0);
     this.target.setX(this.getRandomX());
     this.gameOver();
@@ -124,23 +128,19 @@ class GameScene extends Phaser.Scene{
     
 
   gameOver(){
+    console.log("game over")
+    console.log(this.score)
+    this.sys.destroy
+    console.log(scoreSpan)
+    if (gameEnd) {
+      console.log("Displaying gameEnd");
+      gameEnd.style.display = "flex"; // Ensure it's visible
+    } else {
+      console.error("gameEnd element not found.");
+    }
+    winLoseSpan.textContent= "bruh!!!";
 
-    const finalScore = this.score;
-
-    this.scene.pause("scene-game");
-
-    this.score = 0;
-
-    // Update the Game Over screen with the score and message
-    const gameEnd = document.querySelector("#gameEnd");
-    const gameStart = document.querySelector("#gameStart");
-    const scoreSpan = document.querySelector("#gameEndScoreSpan");
-    const winLoseSpan = document.querySelector("#gameWinLoseSpan");
-
-    scoreSpan.textContent= finalScore
-    winLoseSpan.textContent= "Lose!!!"
-
-    gameEnd.style.display="flex"
+    gameEnd.style.display="flex";
     gameStart.style.display = "none";
    
 
