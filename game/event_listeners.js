@@ -113,6 +113,8 @@ function elementIDSListener(game) {
         gameEnd.style.display="none"
         gameStart.style.display="block"
     });
+
+    return { gameStart, gameEnd, winLoseSpan, scoreSpan };
 }
 
 export default elementIDSListener;

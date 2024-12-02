@@ -1,102 +1,91 @@
 
-import elementIDSListener from './event_listeners.js'
+import elementIDSListener from './event_listeners.js';
 
+const gameStart = document.querySelector("#gameStart");
+const gameEnd = document.querySelector("#gameEnd");
+const scoreSpan = document.querySelector("#gameEndScoreSpan");
+const winLoseSpan = document.querySelector("#gameWinLoseSpan");
 
-//An object that will hold the width and height of
-//the game screen
-const sizes={
-  width:500,
-  height:500
-}
+// Object that holds the width and height of the game screen
+const sizes = {
+  width: 500,
+  height: 500
+};
 
-const speedDown =300
+const speedDown = 300;
 
-
-class GameScene extends Phaser.Scene{
-  constructor(){
-    super("scene-game")
-    //This will act as a variable for the Cpaybara image
-    this.player
-    this.cursor
-    this.playerSpeed=175;
-    this.jumpVelocity=-400;
-    this.target
-    this.bgMusic
-    this.textScore
-    this.score=0;
-
+class GameScene extends Phaser.Scene {
+  constructor() {
+    super("scene-game");
+    this.player = null;
+    this.cursor = null;
+    this.playerSpeed = 175;
+    this.jumpVelocity = -400;
+    this.target = null;
+    this.bgMusic = null;
+    this.textScore = null;
+    this.score = 0;
   }
-  
-  //Initizates the image
-  preload(){
-    this.load.image("background", "./images/BG.png")
-    this.load.image("capybird", "./images/Capybird.png")
-    this.load.image("Obstacle", "./images/Obstacle.png")
-    this.load.audio("bgMusic", "./Audio/bgmusic.mp3")
+
+  preload() {
+    this.load.image("background", "./images/BG.png");
+    this.load.image("capybird", "./images/Capybird.png");
+    this.load.image("Obstacle", "./images/Obstacle.png");
+    this.load.audio("bgMusic", "./Audio/bgmusic.mp3");
   }
-  create(){
-    //This will pause the game unitl the player clicks the start button
-    this.scene.pause("scene-game")
-    //For Canavs
-    //This adds the initliazed photo to the background
-    const canvas_image=this.add.image(0,0,"background").setOrigin(0,0)
-    //This sets the image the same size as the canvas
-    canvas_image.setDisplaySize(sizes.width,sizes.height)
 
-    
-    //For the caybird image
-    const player = this.player=this.physics.add.image(0,388,"capybird").setOrigin(0,0)
-    //Change the size of the player
-    player.setDisplaySize(40,40)
+  create() {
+    // Pause the game until the player clicks the start button
+    this.scene.pause();
 
-    //For now so we can see where the image is on the cnavas but change!!!
-    this.player.body.allowGravity = true
-    
-    this.player.setCollideWorldBounds(true) //set bounds
+    // Set up the background image
+    const canvasImage = this.add.image(0, 0, "background").setOrigin(0, 0);
+    canvasImage.setDisplaySize(sizes.width, sizes.height);
 
-    this.cursor = this.input.keyboard.createCursorKeys()
-    //target settings
+    // Set up the player (Capybird)
+    this.player = this.physics.add.image(0, 388, "capybird").setOrigin(0, 0);
+    this.player.setDisplaySize(40, 40);
+    this.player.body.allowGravity = true;
+    this.player.setCollideWorldBounds(true); // Keep the player within bounds
 
-    this.bgMusic = this.sound.add("bgMusic")
-    this.bgMusic.play() //play
+    // Set up keyboard input
+    this.cursor = this.input.keyboard.createCursorKeys();
 
-    
+    // Set up background music
+    this.bgMusic = this.sound.add("bgMusic");
+    this.bgMusic.play();
 
-    this.target= this.physics.add
+    // Set up the target (obstacle)
+    this.target = this.physics.add
       .image(0, 0, "Obstacle")
       .setOrigin(0, 0)
-      .setDisplaySize(30,30)
-      this.target.setMaxVelocity(0, speedDown);
+      .setDisplaySize(30, 30);
+    this.target.setVelocityY(speedDown);
+    this.physics.add.overlap(this.target, this.player, this.targetHit, null, this);
 
-    this.physics.add.overlap(this.target, this.player, this.targetHit, null, this)
-
-    //-------------------The score displayment and runtime-----------------
-    this.textScore= this.add.text(sizes.width-120,10,"Score:0",{
+    // Set up the score display
+    this.textScore = this.add.text(sizes.width - 120, 10, "Score: 0", {
       font: "20px Arial",
       fill: "#000000",
-    })
-    this.time.addEvent({ delay:1000, callback:()=>{
-        this.score +=100
+    });
+    this.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        this.score += 100;
         this.textScore.setText(`Score: ${this.score}`);
-    },
-    loop:true,
-  });
-    
-
-    
-    
-
-
+      },
+      loop: true,
+    });
   }
-  update(){
 
-    if(this.target.y >= sizes.height) {
+  update() {
+    if (this.target.y >= sizes.height) {
       this.target.setY(0);
       this.target.setX(this.getRandomX());
-      }
-      
-    // player movement
-    const { left, right, up} = this.cursor;
+    }
+
+    // Handle player movement
+    const { left, right, up } = this.cursor;
     if (left.isDown) {
       this.player.setVelocityX(-this.playerSpeed);
     } else if (right.isDown) {
@@ -104,87 +93,68 @@ class GameScene extends Phaser.Scene{
     } else {
       this.player.setVelocityX(0);
     }
-   if (up.isDown) {
-    this.player.setVelocityY(-this.playerSpeed)
-   }
+    if (up.isDown) {
+      this.player.setVelocityY(this.jumpVelocity);
+    }
+  }
 
+  getRandomX() {
+    return Math.floor(Math.random() * (sizes.width - 30));
   }
-    //The random generator for obstacles 
-  getRandomX() { 
-    return Math.floor(Math.random() * 480);
-  }
-  
+
   targetHit() {
-
     this.target.setY(0);
     this.target.setX(this.getRandomX());
     this.gameOver();
-
   }
-    
 
-  gameOver(){
+  gameOver() {
+    console.log("Game Over");
+    this.scene.pause();
+    this.bgMusic.stop(); // Stop the background music
 
-    const finalScore = this.score;
+    // Update the Game Over screen
     const playerName = document.querySelector("#username").value || "Anonymous";
+    const finalScore = this.score;
+    scoreSpan.textContent = finalScore;
+    winLoseSpan.textContent = "Lose!!!";
 
-    this.scene.pause("scene-game");
-    fetch('/api/submit-score', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ player_name: playerName, score: finalScore })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log("Score submitted successfully!");
-        }
-    })
-    .catch(err => console.error("Error submitting score:", err));
-
-    // Reset score and show Game Over screen
-    this.score = 0;
-
-    // Update the Game Over screen with the score and message
-    const gameEnd = document.querySelector("#gameEnd");
-    const gameStart = document.querySelector("#gameStart");
-    const scoreSpan = document.querySelector("#gameEndScoreSpan");
-    const winLoseSpan = document.querySelector("#gameWinLoseSpan");
-
-    scoreSpan.textContent= finalScore
-    winLoseSpan.textContent= "Lose!!!"
-
-    gameEnd.style.display="flex"
+    gameEnd.style.display = "flex";
     gameStart.style.display = "none";
-   
 
+    // Submit score to the server
+    fetch('/api/submit-score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ player_name: playerName, score: finalScore }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log("Score submitted successfully!");
+        }
+      })
+      .catch(err => console.error("Error submitting score:", err));
 
-      
-
-    
-
+    this.score = 0; // Reset the score
   }
 }
 
-const config ={
-  type:Phaser.WEBGL,
-  width:sizes.width,
-  height:sizes.height,
-  canvas:gameCanvas,
-
-  // Adding a physics proeprty
-  //As an object
-  physics:{
-    default:"arcade",
-    arcade:{
-      gravity:{y:speedDown},
-      debug:false
-    }
-
+const config = {
+  type: Phaser.WEBGL,
+  width: sizes.width,
+  height: sizes.height,
+  canvas: document.querySelector("#gameCanvas"),
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { y: speedDown },
+      debug: false,
+    },
   },
-  scene:[GameScene]
-}
+  scene: [GameScene],
+};
 
-const game = new Phaser.Game(config)
+const game = new Phaser.Game(config);
 
-elementIDSListener(game)
+elementIDSListener(game);
