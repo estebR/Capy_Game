@@ -52,8 +52,7 @@ class GameScene extends Phaser.Scene {
     this.cursor = this.input.keyboard.createCursorKeys();
 
     // Set up background music
-    this.bgMusic = this.sound.add("bgMusic");
-    this.bgMusic.play();
+    this.bgMusic = this.sound.add("bgMusic", { loop: true} );
 
     // Set up the target (obstacle)
     this.target = this.physics.add
