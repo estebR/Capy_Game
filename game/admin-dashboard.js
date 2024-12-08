@@ -1,5 +1,5 @@
 function fetchLeaderboard() {
-    fetch('/leaderboard')  // Ensure this matches the correct endpoint
+    fetch('/admin-dashboard')  // Ensure this matches the correct endpoint
         .then(response => {
             if (!response.ok) {
                 console.error('Failed to fetch leaderboard:', response.statusText);

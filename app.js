@@ -178,6 +178,7 @@ function handleDeleteRecord(req, res) {
         req.on('data', chunk => body += chunk.toString());
         req.on('end', () => {
             const { player_name } = JSON.parse(body);
+	    console.log('Deleting player:', player_name); // Log the player_name 
             db.query('DELETE FROM leaderboard WHERE player_name = ?', [player_name], (err, result) => {
                 if (err) {
                     res.writeHead(500, { "Content-Type": "application/json" });
