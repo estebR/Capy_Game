@@ -97,11 +97,21 @@ function handleLogin(req, res) {
                     }
 
                     if (results.length > 0) {
-                        console.log("Login successful, redirecting to Admin Dashboard...");
-                        res.writeHead(302, { Location: '/admin-dashboard' });
-                        res.end(); // Redirect
+                        console.log("Login successful, serving Admin Dashboard...");
+
+                        // Serve the admin dashboard HTML page directly after login
+                        const filePath = path.join(__dirname, 'game', 'admin-dashboard.html');
+                        fs.readFile(filePath, (err, data) => {
+                            if (err) {
+                                res.writeHead(404, { "Content-Type": "text/plain" });
+                                res.end("404 Not Found");
+                            } else {
+                                res.writeHead(200, { "Content-Type": "text/html" });
+                                res.end(data);
+                            }
+                        });
                     } else {
-                        console.log("Invalid login credentials. Redirecting back to login...");
+                        console.log("Invalid login credentials.");
                         res.writeHead(302, { Location: '/' });
                         res.end(); // Redirect back to login
                     }
@@ -144,43 +154,21 @@ function serveStaticFiles(req, res) {
     });
 }
 
-function serveAdminDashboard(req, res) {
-    console.log("Admin Dashboard request received");
-
-    if (req.url === '/admin-dashboard' && req.method === 'GET') {
+function serveAdminDashboardData(req, res) {
+    if (req.url === '/admin-dashboard-data' && req.method === 'GET') {
         db.query('SELECT player_name, score FROM leaderboard ORDER BY score DESC LIMIT 10', (err, results) => {
             if (err) {
-                if (!res.headersSent) {
-                    res.writeHead(500, { "Content-Type": "application/json" });
-                    res.end(JSON.stringify({ error: 'Database query failed' }));
-                }
+                res.writeHead(500, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ error: 'Database query failed' }));
                 return;
             }
 
-            // Write the start of the HTML page
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.write('<h1>Admin Dashboard</h1>');
-            res.write('<ul>');
-
-            // Loop through the leaderboard and write each player
-            results.forEach(player => {
-                res.write(`<li>${player.player_name}: ${player.score}</li>`);
-            });
-
-            // End the HTML content
-            res.write('</ul>');
-            res.write(`
-                <form action="/delete-record" method="POST">
-                    <label for="score">Enter Score to Delete:</label>
-                    <input type="number" name="score" id="score" required>
-                    <button type="submit">Delete</button>
-                </form>
-            `);
-
-            // Finalize the response with res.end()
-            res.end();
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(results)); // Send leaderboard data
         });
+        return true;
     }
+    return false;
 }
 
 

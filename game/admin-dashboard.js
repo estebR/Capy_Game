@@ -1,7 +1,7 @@
 fetch('/admin-dashboard-data')
     .then(response => response.json())
     .then(data => {
-        const leaderboard = document.getElementById('leaderboard');
+        const leaderboard = document.getElementById('leaderboard-rows');
         leaderboard.innerHTML = data
             .map(player => `<li>${player.player_name}: ${player.score}</li>`)
             .join('');
