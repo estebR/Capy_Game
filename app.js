@@ -177,8 +177,8 @@ function handleDeleteRecord(req, res) {
         let body = '';
         req.on('data', chunk => body += chunk.toString());
         req.on('end', () => {
-            const { score } = JSON.parse(body);
-            db.query('DELETE FROM leaderboard WHERE score = ?', [score], (err, result) => {
+            const { player_name } = JSON.parse(body);
+            db.query('DELETE FROM leaderboard WHERE player_name = ?', [player_name], (err, result) => {
                 if (err) {
                     res.writeHead(500, { "Content-Type": "application/json" });
                     res.end(JSON.stringify({ error: 'Failed to delete record' }));
@@ -193,6 +193,7 @@ function handleDeleteRecord(req, res) {
         return false;
     }
 }
+
 
 // Create the server
 const server = http.createServer((req, res) => {
