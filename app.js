@@ -37,14 +37,14 @@ function handleAPI(req, res) {
         req.on('end', () => {
 	    console.log("Received data:", body);
             try {
-                const { playerName, score } = JSON.parse(body);
-                if (!playerName || typeof score !== 'number') {
+                const { player_name, score } = JSON.parse(body);
+                if (!player_name || typeof score !== 'number') {
                     throw new Error("Invalid input");
                 }
 
                 db.query(
                     'INSERT INTO leaderboard (player_name, score) VALUES (?, ?) ON DUPLICATE KEY UPDATE score = GREATEST(score, ?)',
-                    [playerName, parseInt(score, 10), parseInt(score, 10)],
+                    [player_name, parseInt(score, 10), parseInt(score, 10)],
                     (err) => {
                         if (err) {
                             res.writeHead(500, { "Content-Type": "application/json" });
