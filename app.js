@@ -1,125 +1,102 @@
 const http = require('http');
 const mysql = require('mysql2');
 const fs = require('fs');
-const url = require('url');
 const path = require('path');
 
-// Database connection
+// Database connection with error handling
 const db = mysql.createConnection({
     host: '35.196.44.64',
     user: 'nodeuser',
-    password: 'nodeuser', // Replace with your database password
+    password: 'nodeuser',
     database: 'game',
 });
+db.connect((err) => {
+    if (err) {
+        console.error("Failed to connect to the database:", err);
+        process.exit(1);
+    }
+    console.log("Connected to the database.");
+});
 
-// Function to serve static files or API responses
-function sendFile(reqObj, resObj) {
-    const parsedUrl = url.parse(reqObj.url, true);
-    const pathname = parsedUrl.pathname;
-
-    // Check if the request is for an API endpoint
-    if (pathname === '/leaderboard' && reqObj.method === 'GET') {
-        // Handle GET /leaderboard
+// Serve API responses
+function handleAPI(req, res) {
+    const url = req.url;
+    if (url === '/leaderboard' && req.method === 'GET') {
         db.query('SELECT player_name, score FROM leaderboard ORDER BY score DESC LIMIT 10', (err, results) => {
             if (err) {
-                resObj.writeHead(500, { "Content-Type": "application/json" });
-                resObj.end(JSON.stringify({ error: "Database query failed" }));
+                res.writeHead(500, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ error: "Database query failed" }));
                 return;
             }
-            resObj.writeHead(200, { "Content-Type": "application/json" });
-            resObj.end(JSON.stringify(results));
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(results));
         });
-    } else if (pathname === '/submit-score' && reqObj.method === 'POST') {
-        // Handle POST /submit-score
+    } else if (url === '/submit-score' && req.method === 'POST') {
         let body = '';
-        reqObj.on('data', chunk => {
-            body += chunk.toString();
-        });
-        reqObj.on('end', () => {
-            const { playerName, score } = JSON.parse(body);
-            if (!playerName || typeof score !== 'number') {
-                resObj.writeHead(400, { "Content-Type": "application/json" });
-                resObj.end(JSON.stringify({ error: "Invalid data format" }));
-                return;
-            }
-
-            // Check if score qualifies for the leaderboard
-            db.query('SELECT score FROM leaderboard ORDER BY score ASC LIMIT 1', (err, results) => {
-                if (err) {
-                    resObj.writeHead(500, { "Content-Type": "application/json" });
-                    resObj.end(JSON.stringify({ error: "Database query failed" }));
-                    return;
+        req.on('data', chunk => body += chunk.toString());
+        req.on('end', () => {
+	    console.log("Received data:", body);
+            try {
+                const { player_name, score } = JSON.parse(body);
+                if (!player_name || typeof score !== 'number') {
+                    throw new Error("Invalid input");
                 }
 
-                const lowestScore = results[0]?.score || 0;
-
-                if (results.length < 10 || score > lowestScore) {
-                    // Insert new score and remove the lowest if leaderboard has 10 entries
-                    db.query(
-                        'INSERT INTO leaderboard (player_name, score) VALUES (?, ?) ON DUPLICATE KEY UPDATE score = GREATEST(score, ?)',
-                        [playerName, score, score],
-                        (insertErr) => {
-                            if (insertErr) {
-                                resObj.writeHead(500, { "Content-Type": "application/json" });
-                                resObj.end(JSON.stringify({ error: "Failed to update leaderboard" }));
-                                return;
-                            }
-
-                            if (results.length === 10) {
-                                const deleteQuery = 'DELETE FROM leaderboard WHERE id NOT IN (SELECT id FROM (SELECT id FROM leaderboard ORDER BY score DESC LIMIT 10) AS topScores)';
-                                db.query(deleteQuery, (deleteErr) => {
-                                    if (deleteErr) {
-                                        resObj.writeHead(500, { "Content-Type": "application/json" });
-                                        resObj.end(JSON.stringify({ error: "Failed to trim leaderboard" }));
-                                        return;
-                                    }
-                                    resObj.writeHead(200, { "Content-Type": "application/json" });
-                                    resObj.end(JSON.stringify({ success: true }));
-                                });
-                            } else {
-                                resObj.writeHead(200, { "Content-Type": "application/json" });
-                                resObj.end(JSON.stringify({ success: true }));
-                            }
+                db.query(
+                    'INSERT INTO leaderboard (player_name, score) VALUES (?, ?) ON DUPLICATE KEY UPDATE score = GREATEST(score, ?)',
+                    [player_name, parseInt(score, 10), parseInt(score, 10)],
+                    (err) => {
+                        if (err) {
+                            res.writeHead(500, { "Content-Type": "application/json" });
+                            res.end(JSON.stringify({ error: "Failed to update leaderboard" }));
+                        } else {
+                            res.writeHead(200, { "Content-Type": "application/json" });
+                            res.end(JSON.stringify({ success: true }));
                         }
-                    );
-                } else {
-                    resObj.writeHead(200, { "Content-Type": "application/json" });
-                    resObj.end(JSON.stringify({ message: "Score not high enough for leaderboard" }));
-                }
-            });
+                    }
+                );
+            } catch (e) {
+                res.writeHead(400, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ error: e.message }));
+            }
         });
     } else {
-        // Serve static files for other requests
-        let fileName = pathname === '/' ? '/index.html' : pathname;
-        fs.readFile('./game' + fileName, (err, data) => {
-            if (err) {
-                resObj.writeHead(404, { "Content-Type": "text/plain" });
-                resObj.end("404 Not Found");
-            } else {
-                resObj.writeHead(200, { "Content-Type": getContentType(fileName) });
-                resObj.end(data);
-            }
-        });
+        return false;
     }
+    return true;
 }
 
-// Determine content type for static files
-function getContentType(fileName) {
-    const ext = path.extname(fileName);
-    switch (ext) {
-        case '.html': return 'text/html';
-        case '.css': return 'text/css';
-        case '.js': return 'application/javascript';
-        case '.png': return 'image/png';
-        case '.jpg': return 'image/jpeg';
-        case '.mp3': return 'audio/mpeg';
-        case '.wav': return 'audio/wav';
-        default: return 'application/octet-stream';
-    }
+// Serve static files
+function serveStaticFiles(req, res) {
+    const filePath = path.join(__dirname, 'game', req.url === '/' ? 'index.html' : req.url);
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            res.writeHead(404, { "Content-Type": "text/plain" });
+            res.end("404 Not Found");
+        } else {
+            const ext = path.extname(filePath);
+            const contentType = {
+                '.html': 'text/html',
+                '.css': 'text/css',
+                '.js': 'application/javascript',
+                '.png': 'image/png',
+                '.jpg': 'image/jpeg',
+                '.mp3': 'audio/mpeg',
+                '.wav': 'audio/wav',
+            }[ext] || 'application/octet-stream';
+            res.writeHead(200, { "Content-Type": contentType });
+            res.end(data);
+        }
+    });
 }
 
 // Create the server
-const server = http.createServer(sendFile);
+const server = http.createServer((req, res) => {
+    if (!handleAPI(req, res)) {
+        serveStaticFiles(req, res);
+    }
+});
+
 server.listen(80, () => {
     console.log("Server running on port 80");
 });
