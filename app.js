@@ -120,6 +120,6 @@ function getContentType(fileName) {
 
 // Create the server
 const server = http.createServer(sendFile);
-server.listen(80, () => {
+server.listen(3000, () => {
     console.log("Server running on port 80");
 });

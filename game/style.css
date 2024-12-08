@@ -55,26 +55,27 @@ main{
  .gameUI{
   width:100%;
   height:100%;
-  background-image: "BG.png";
+  
   display:flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 2;
  }
-/*This is the start screen buttons css*/
 
-.gameUi *{
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5px;
-}  
+
+
 
 #gameStart{
 
-  display: flex;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Avoid stacking issues */
+
+
 
 }
 #gameEnd{
@@ -84,29 +85,32 @@ main{
 
 /*start screen css*/
 
-#startScreenButton{
-  cursor: pointer;
-  position: relative;
-  display:flex;
-  flex-direction:column; 
+#startScreenButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; 
+  z-index: 2;
 }
 
+
 button {
-  margin: 10%;
-  width: 100%;
-  height: 80%;
+  width: 200px; /* Fixed width for consistency */
+  height: 50px; /* Fixed height for better appearance */
+  margin: 10px 0;
   background-color: #04AA6D; /* Green */
   border: none;
   border-radius: 5px;
   color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth transition */
+  transition: background-color 0.3s ease;
 }
+
 
 button:hover {
   background-color: yellow; /* Light green */

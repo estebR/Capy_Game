@@ -19,7 +19,7 @@ class GameScene extends Phaser.Scene {
     super("scene-game");
     this.player = null;
     this.cursor = null;
-    this.playerSpeed = 175;
+    this.playerSpeed = 150;
     this.jumpVelocity = -400;
     this.target = null;
     this.bgMusic = null;
@@ -47,6 +47,7 @@ class GameScene extends Phaser.Scene {
     this.player.setDisplaySize(40, 40);
     this.player.body.allowGravity = true;
     this.player.setCollideWorldBounds(true); // Keep the player within bounds
+    this.player.body.setGravityY(600); // Adjust the value to increase gravity
 
     // Set up keyboard input
     this.cursor = this.input.keyboard.createCursorKeys();
@@ -59,6 +60,7 @@ class GameScene extends Phaser.Scene {
       .image(0, 0, "Obstacle")
       .setOrigin(0, 0)
       .setDisplaySize(30, 30);
+    this.target.body.allowGravity = false;
     this.target.setVelocityY(speedDown);
     this.physics.add.overlap(this.target, this.player, this.targetHit, null, this);
 
