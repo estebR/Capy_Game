@@ -154,8 +154,8 @@ function serveStaticFiles(req, res) {
     });
 }
 
-function serveAdminDashboardData(req, res) {
-    if (req.url === '/admin-dashboard-data' && req.method === 'GET') {
+function serveAdminDashboard(req, res) {
+    if (req.url === '/admin-dashboard' && req.method === 'GET') {
         db.query('SELECT player_name, score FROM leaderboard ORDER BY score DESC LIMIT 10', (err, results) => {
             if (err) {
                 res.writeHead(500, { "Content-Type": "application/json" });
