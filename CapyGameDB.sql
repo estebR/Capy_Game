@@ -21,3 +21,6 @@ CREATE TABLE IF NOT EXISTS admin (
     password VARCHAR(255) NOT NULL
 );
 
+INSERT INTO admin (username, password)
+VALUES ('admin', 'adminpassword');
+

@@ -107,33 +107,40 @@ function handleLogin(req, res) {
         let body = '';
         req.on('data', chunk => body += chunk.toString());
         req.on('end', () => {
-            const { username, password } = JSON.parse(body);
+            // Parse the URL-encoded body (form data)
+            const params = new URLSearchParams(body);
+            const username = params.get('username');
+            const password = params.get('password');
+
             if (!username || !password) {
                 res.writeHead(400, { "Content-Type": "application/json" });
                 res.end(JSON.stringify({ error: 'Invalid input' }));
-                return;
+                return;  // Make sure to return after sending the response
             }
 
             db.query('SELECT * FROM admins WHERE username = ? AND password = ?', [username, password], (err, results) => {
                 if (err) {
                     res.writeHead(500, { "Content-Type": "application/json" });
                     res.end(JSON.stringify({ error: 'Database query failed' }));
-                    return;
+                    return;  // Make sure to return after sending the response
                 }
 
                 if (results.length > 0) {
                     // Admin login successful, redirect to the admin dashboard
                     res.writeHead(302, { 'Location': '/admin-dashboard' });
-                    res.end();
+                    res.end(); // Redirect
+                    return;  // Return to stop further execution
                 } else {
                     // Invalid login, redirect back to login page
                     res.writeHead(302, { 'Location': '/' });
-                    res.end();
+                    res.end(); // Redirect
+                    return;  // Return to stop further execution
                 }
             });
         });
     }
 }
+
 
 // Serve the admin dashboard page
 function serveAdminDashboard(req, res) {
