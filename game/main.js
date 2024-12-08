@@ -131,6 +131,7 @@ class GameScene extends Phaser.Scene {
       .then(data => {
         if (data.success) {
           console.log("Score submitted successfully!");
+	  fetchLeaderboard();
         }
       })
       .catch(err => console.error("Error submitting score:", err));

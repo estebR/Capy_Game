@@ -35,6 +35,7 @@ function handleAPI(req, res) {
         let body = '';
         req.on('data', chunk => body += chunk.toString());
         req.on('end', () => {
+	    console.log("Received data:", body);
             try {
                 const { playerName, score } = JSON.parse(body);
                 if (!playerName || typeof score !== 'number') {
@@ -43,7 +44,7 @@ function handleAPI(req, res) {
 
                 db.query(
                     'INSERT INTO leaderboard (player_name, score) VALUES (?, ?) ON DUPLICATE KEY UPDATE score = GREATEST(score, ?)',
-                    [playerName, score, score],
+                    [playerName, parseInt(score, 10), parseInt(score, 10)],
                     (err) => {
                         if (err) {
                             res.writeHead(500, { "Content-Type": "application/json" });
