@@ -66,22 +66,65 @@ function handleAPI(req, res) {
     return true;
 }
 
-function serveStaticFiles(req, res) {
-    // Check if the request is for the login page or the game page (index.html)
-    let filePath = path.join(__dirname, 'game', req.url === '/' ? 'login.html' : req.url);
+function handleLogin(req, res) {
+    if (req.url === '/login' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => (body += chunk.toString()));
+        req.on('end', () => {
+            console.log("Login form data received:", body);
 
-    // Check if the request is for a file in the /game directory (images, audio, js, css)
-    if (req.url !== '/' && req.url.startsWith('/game')) {
-        filePath = path.join(__dirname, 'game', req.url.replace('/game', ''));  // Strip '/game' prefix from URL
+            // Parse the URL-encoded body (form data)
+            const params = new URLSearchParams(body);
+            const username = params.get('username');
+            const password = params.get('password');
+
+            if (!username || !password) {
+                res.writeHead(400, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ error: 'Invalid input' }));
+                return;
+            }
+
+            // Query the database to validate the admin credentials
+            db.query(
+                'SELECT * FROM admin WHERE username = ? AND password = ?',
+                [username, password],
+                (err, results) => {
+                    console.log("Database query results:", results);
+                    if (err) {
+                        res.writeHead(500, { "Content-Type": "application/json" });
+                        res.end(JSON.stringify({ error: 'Database query failed' }));
+                        return;
+                    }
+
+                    if (results.length > 0) {
+                        console.log("Login successful, redirecting to Admin Dashboard...");
+                        res.writeHead(302, { Location: '/admin-dashboard' });
+                        res.end(); // Redirect
+                    } else {
+                        console.log("Invalid login credentials. Redirecting back to login...");
+                        res.writeHead(302, { Location: '/' });
+                        res.end(); // Redirect back to login
+                    }
+                }
+            );
+        });
+    }
+}
+
+
+function serveStaticFiles(req, res) {
+    // Only serve static files for non-POST requests
+    if (req.method === 'POST') return false;
+
+    let filePath;
+    if (req.url === '/') {
+        filePath = path.join(__dirname, 'game', 'login.html'); // Serve login page
+    } else {
+        filePath = path.join(__dirname, 'game', req.url);
     }
 
-    console.log("Requested URL:", req.url); // Log the requested URL
-    console.log("File path being served:", filePath); // Log the file path being served
-
-    // Read and serve the requested file
     fs.readFile(filePath, (err, data) => {
         if (err) {
-            console.error("File not found:", err); // Log any file reading errors
             res.writeHead(404, { "Content-Type": "text/plain" });
             res.end("404 Not Found");
         } else {
@@ -101,50 +144,9 @@ function serveStaticFiles(req, res) {
     });
 }
 
-// Handle admin login (POST request)
-function handleLogin(req, res) {
-    if (req.url === '/login' && req.method === 'POST') {
-        let body = '';
-        req.on('data', chunk => body += chunk.toString());
-        req.on('end', () => {
-            // Parse the URL-encoded body (form data)
-            const params = new URLSearchParams(body);
-            const username = params.get('username');
-            const password = params.get('password');
-
-            if (!username || !password) {
-                res.writeHead(400, { "Content-Type": "application/json" });
-                res.end(JSON.stringify({ error: 'Invalid input' }));
-                return;  // Make sure to return after sending the response
-            }
-
-            db.query('SELECT * FROM admins WHERE username = ? AND password = ?', [username, password], (err, results) => {
-                if (err) {
-                    res.writeHead(500, { "Content-Type": "application/json" });
-                    res.end(JSON.stringify({ error: 'Database query failed' }));
-                    return;  // Make sure to return after sending the response
-                }
-
-                if (results.length > 0) {
-                    // Admin login successful, redirect to the admin dashboard
-                    res.writeHead(302, { 'Location': '/admin-dashboard' });
-                    res.end(); // Redirect
-                    return;  // Return to stop further execution
-                } else {
-                    // Invalid login, redirect back to login page
-                    res.writeHead(302, { 'Location': '/' });
-                    res.end(); // Redirect
-                    return;  // Return to stop further execution
-                }
-            });
-        });
-    }
-}
-
-
-// Serve the admin dashboard page
 function serveAdminDashboard(req, res) {
-    if (req.url === '/admin-dashboard') {
+    console.log("Admin Dashboard request received"); // Ensure this logs once per request
+    if (req.url === '/admin-dashboard' && req.method === 'GET') {
         db.query('SELECT player_name, score FROM leaderboard ORDER BY score DESC LIMIT 10', (err, results) => {
             if (err) {
                 res.writeHead(500, { "Content-Type": "application/json" });
@@ -152,7 +154,9 @@ function serveAdminDashboard(req, res) {
                 return;
             }
 
-            let leaderboardHTML = results.map(player => `<li>${player.player_name}: ${player.score}</li>`).join('');
+            let leaderboardHTML = results.map(
+                player => `<li>${player.player_name}: ${player.score}</li>`
+            ).join('');
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.end(`
                 <h1>Admin Dashboard</h1>
@@ -164,10 +168,13 @@ function serveAdminDashboard(req, res) {
                 </form>
             `);
         });
+    } else {
+        return false;
     }
 }
 
-// Handle leaderboard record deletion
+
+
 function handleDeleteRecord(req, res) {
     if (req.url === '/delete-record' && req.method === 'POST') {
         let body = '';
@@ -185,13 +192,23 @@ function handleDeleteRecord(req, res) {
                 res.end();
             });
         });
+    } else {
+        return false;
     }
 }
 
 // Create the server
 const server = http.createServer((req, res) => {
-    if (req.url === '/' || req.url === '/login' || req.url === '/admin-dashboard') {
-        handleLogin(req, res) || serveStaticFiles(req, res) || serveAdminDashboard(req, res) || handleDeleteRecord(req, res);
+    console.log(`Received request: ${req.method} ${req.url}`); // Log all requests
+    if (
+        req.url === '/' || 
+        req.url === '/login' || 
+        req.url === '/admin-dashboard'
+    ) {
+        handleLogin(req, res) || 
+        serveStaticFiles(req, res) || 
+        serveAdminDashboard(req, res) || 
+        handleDeleteRecord(req, res);
     } else if (!handleAPI(req, res)) {
         serveStaticFiles(req, res);
     }
