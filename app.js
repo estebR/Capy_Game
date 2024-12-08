@@ -145,34 +145,43 @@ function serveStaticFiles(req, res) {
 }
 
 function serveAdminDashboard(req, res) {
-    console.log("Admin Dashboard request received"); // Ensure this logs once per request
+    console.log("Admin Dashboard request received");
+
     if (req.url === '/admin-dashboard' && req.method === 'GET') {
         db.query('SELECT player_name, score FROM leaderboard ORDER BY score DESC LIMIT 10', (err, results) => {
             if (err) {
-                res.writeHead(500, { "Content-Type": "application/json" });
-                res.end(JSON.stringify({ error: 'Database query failed' }));
+                if (!res.headersSent) {
+                    res.writeHead(500, { "Content-Type": "application/json" });
+                    res.end(JSON.stringify({ error: 'Database query failed' }));
+                }
                 return;
             }
 
-            let leaderboardHTML = results.map(
-                player => `<li>${player.player_name}: ${player.score}</li>`
-            ).join('');
+            // Write the start of the HTML page
             res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.end(`
-                <h1>Admin Dashboard</h1>
-                <ul>${leaderboardHTML}</ul>
+            res.write('<h1>Admin Dashboard</h1>');
+            res.write('<ul>');
+
+            // Loop through the leaderboard and write each player
+            results.forEach(player => {
+                res.write(`<li>${player.player_name}: ${player.score}</li>`);
+            });
+
+            // End the HTML content
+            res.write('</ul>');
+            res.write(`
                 <form action="/delete-record" method="POST">
                     <label for="score">Enter Score to Delete:</label>
                     <input type="number" name="score" id="score" required>
                     <button type="submit">Delete</button>
                 </form>
             `);
+
+            // Finalize the response with res.end()
+            res.end();
         });
-    } else {
-        return false;
     }
 }
-
 
 
 function handleDeleteRecord(req, res) {
