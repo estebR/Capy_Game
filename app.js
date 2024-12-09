@@ -135,6 +135,7 @@ function serveStaticFiles(req, res) {
 
     fs.readFile(filePath, (err, data) => {
         if (err) {
+	    console.error('Error serving file:', filePath);
             res.writeHead(404, { "Content-Type": "text/plain" });
             res.end("404 Not Found");
         } else {
@@ -158,11 +159,12 @@ function serveAdminDashboard(req, res) {
     if (req.url === '/admin-dashboard' && req.method === 'GET') {
         db.query('SELECT player_name, score FROM leaderboard ORDER BY score DESC LIMIT 10', (err, results) => {
             if (err) {
+		console.error("Error fetching leaderboard:", err);
                 res.writeHead(500, { "Content-Type": "application/json" });
                 res.end(JSON.stringify({ error: 'Database query failed' }));
                 return;
             }
-
+	    console.log("Leaderboard data:", results);  // Log the fetched leaderboard data
             res.writeHead(200, { "Content-Type": "application/json" });
             res.end(JSON.stringify(results)); // Send leaderboard data
         });

@@ -1,5 +1,5 @@
-function fetchLeaderboard() {
-    fetch('/admin-dashboard')  // Ensure this matches the correct endpoint
+function fetchAdminLeaderboard() {
+    fetch('/leaderboard')  // Ensure this matches the correct endpoint
         .then(response => {
             if (!response.ok) {
                 console.error('Failed to fetch leaderboard:', response.statusText);
@@ -10,7 +10,7 @@ function fetchLeaderboard() {
         .then(data => {
             console.log('Leaderboard data:', data);  // Log the fetched data
 
-            const leaderboard = document.getElementById('leaderboard-rows');
+            const leaderboard = document.getElementById('admin-leaderboard');
             leaderboard.innerHTML = '';  // Clear existing entries
 
             // Check if data is an array
