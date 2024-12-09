@@ -14,3 +14,13 @@ CREATE TABLE IF NOT EXISTS leaderboard (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+CREATE TABLE IF NOT EXISTS admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+INSERT INTO admin (username, password)
+VALUES ('admin', 'adminpassword');
+

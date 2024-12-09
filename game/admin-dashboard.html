@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <ul id="admin-leaderboard">
+        <!-- This will be populated dynamically -->
+    </ul>
+
+    <form action="/delete-record" method="POST">
+        <label for="player_name">Enter Player Name to Delete:</label>
+        <input type="text" name="player_name" id="player_name" required>
+        <button type="submit">Delete</button>
+    </form>
+
+    <script src="admin-dashboard.js"></script>  <!-- Make sure JS is linked correctly -->
+</body>
+</html>
