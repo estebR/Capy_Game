@@ -1,19 +1,18 @@
-
 import elementIDSListener from './event_listeners.js';
-
+ 
 const gameStart = document.querySelector("#gameStart");
 const gameEnd = document.querySelector("#gameEnd");
 const scoreSpan = document.querySelector("#gameEndScoreSpan");
 const winLoseSpan = document.querySelector("#gameWinLoseSpan");
-
+ 
 // Object that holds the width and height of the game screen
 const sizes = {
   width: 500,
   height: 500
 };
-
+ 
 const speedDown = 300;
-
+ 
 class GameScene extends Phaser.Scene {
   constructor() {
     super("scene-game");
@@ -26,34 +25,34 @@ class GameScene extends Phaser.Scene {
     this.textScore = null;
     this.score = 0;
   }
-
+ 
   preload() {
     this.load.image("background", "./images/BG.png");
     this.load.image("capybird", "./images/Capybird.png");
     this.load.image("Obstacle", "./images/Obstacle.png");
     this.load.audio("bgMusic", "./Audio/bgmusic.mp3");
   }
-
+ 
   create() {
     // Pause the game until the player clicks the start button
     this.scene.pause();
-
+ 
     // Set up the background image
     const canvasImage = this.add.image(0, 0, "background").setOrigin(0, 0);
     canvasImage.setDisplaySize(sizes.width, sizes.height);
-
+ 
     // Set up the player (Capybird)
     this.player = this.physics.add.image(0, 388, "capybird").setOrigin(0, 0);
     this.player.setDisplaySize(40, 40);
     this.player.body.allowGravity = true;
     this.player.setCollideWorldBounds(true); // Keep the player within bounds
-
+ 
     // Set up keyboard input
     this.cursor = this.input.keyboard.createCursorKeys();
-
+ 
     // Set up background music
     this.bgMusic = this.sound.add("bgMusic", { loop: true} );
-
+ 
     // Set up the target (obstacle)
     this.target = this.physics.add
       .image(0, 0, "Obstacle")
@@ -61,7 +60,7 @@ class GameScene extends Phaser.Scene {
       .setDisplaySize(30, 30);
     this.target.setVelocityY(speedDown);
     this.physics.add.overlap(this.target, this.player, this.targetHit, null, this);
-
+ 
     // Set up the score display
     this.textScore = this.add.text(sizes.width - 120, 10, "Score: 0", {
       font: "20px Arial",
@@ -76,13 +75,13 @@ class GameScene extends Phaser.Scene {
       loop: true,
     });
   }
-
+ 
   update() {
     if (this.target.y >= sizes.height) {
       this.target.setY(0);
       this.target.setX(this.getRandomX());
     }
-
+ 
     // Handle player movement
     const { left, right, up } = this.cursor;
     if (left.isDown) {
@@ -96,31 +95,31 @@ class GameScene extends Phaser.Scene {
       this.player.setVelocityY(this.jumpVelocity);
     }
   }
-
+ 
   getRandomX() {
     return Math.floor(Math.random() * (sizes.width - 30));
   }
-
+ 
   targetHit() {
     this.target.setY(0);
     this.target.setX(this.getRandomX());
     this.gameOver();
   }
-
+ 
   gameOver() {
     console.log("Game Over");
     this.scene.pause();
     this.bgMusic.stop(); // Stop the background music
-
+ 
     // Update the Game Over screen
     const playerName = localStorage.getItem("player_name") || "Anonymous";
     const finalScore = this.score;
     scoreSpan.textContent = finalScore;
     winLoseSpan.textContent = "Lose!!!";
-
+ 
     gameEnd.style.display = "flex";
     gameStart.style.display = "none";
-
+ 
     // Submit score to the server
     fetch('submit-score', {
       method: 'POST',
@@ -131,15 +130,15 @@ class GameScene extends Phaser.Scene {
       .then(data => {
         if (data.success) {
           console.log("Score submitted successfully!");
-	  fetchLeaderboard();
+    fetchLeaderboard();
         }
       })
       .catch(err => console.error("Error submitting score:", err));
-
+ 
     this.score = 0; // Reset the score
   }
 }
-
+ 
 const config = {
   type: Phaser.WEBGL,
   width: sizes.width,
@@ -154,7 +153,7 @@ const config = {
   },
   scene: [GameScene],
 };
-
+ 
 const game = new Phaser.Game(config);
-
+ 
 elementIDSListener(game);
