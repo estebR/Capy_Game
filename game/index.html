@@ -2,66 +2,70 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
-<link rel="icon" type="image/svg+xml" href="/assets/favicon.ico" />
-<link rel="stylesheet" href="style.css">
-
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Capybird</title>
-</head>
-<body>
-
-<header>
-<!-- Checking to see if the branch pull request works-->
-</header>
-<main>
-  <canvas id="gameCanvas"></canvas>
-  <!------------- Start Screen --------->
-  <div id="gameStart" class="gameUI">
-    <h1> Capybird</h1>
-    <div id="login">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username">
-
-      <label for="password">Password:</label>
-      <input type="text" id="password" name="password">
-      <br>
-      <br>
-    </div>
-
-    <!-----------The Start Screen Buttons-------->
-    <div id="startScreenButton">
-
-        <button type="button" id="start">Start</button>
-        <button type="button" id="leaderboard_button">Leaderboard</button>
-        <button type="button" id="customize_button">Customize</button>
-    </div>
-  </div>
-  <!-------------The End Screen -------->
-  <div id="gameEnd" class="gameUI">
-    <p>Game over</p>
-    <h1>You <span ID="gameWinLoseSpan"></span></h1>
-    <h1>Final Score: <span id = gameEndScoreSpan> </span></h1>
-    <button type="button" id="restart">Restart</button>
-  </div>
-    <!--The leaderboard Screen-->
-    <div id="leaderboard" class="gameUI">
-    
-      <div id="exit_leaderboard">
-        <button type="button">Exit</button>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.ico" />
+    <link rel="stylesheet" href="style.css">
+   
+ 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capybird</title>
+  </head>
+  <body>
+   
+    <header>
+     
+    </header>
+    <main>
+      <canvas id="gameCanvas"></canvas>
+      <!------------- Start Screen --------->
+      <div id="gameStart" class="gameUI">
+        <h1> Capybird</h1>
+        <div id="login">
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username">
+ 
+          <label for="password">Password:</label>
+          <input type="text" id="password" name="password">
+          <br>
+          <br>
+        </div>
+ 
+     
+        <!-----------The Start Screen Buttons-------->
+        <div id="startScreenButton">
+ 
+            <button type="button" id="start">Start</button>
+            <button type="button" id="leaderboard_button">Leaderboard</button>
+            <button type="button" id="customize_button">Customize</button>
+        </div>
       </div>
-  </div>
+      <!-------------The End Screen -------->
+      <div id="gameEnd" class="gameUI">
+        <p>Game over</p>
+        <h1>You <span ID="gameWinLoseSpan"></span></h1>
+        <h1>Final Score: <span id = gameEndScoreSpan> </span></h1>
+        <button type="button" id="restart">Restart</button>
+      </div>
+        <!--T------------------------he leaderboard Screen--------------------------->
+        <div id="leaderboard" class="gameUI">
+    <h2>Leaderboard<h2>
+    <div id="leaderboard-rows">
+   
+    </div>
+          <div id="exit_leaderboard">
+            <button type="button">Exit</button>
+          </div>
+      </div>
+ 
       <!-----------------------------------------------------Cuzotmize screen--------------------------------------------------------------->
       <div id="customize" class="gameUI">
         <h2>Customize Your Game</h2>
-      </div>
+ 
         <!------------------------Inital Screen when Cuztomize button is clickes-->
         <div id="customize_options">
           <button type="button" id="capybird_button">Capybird</button>
           <button type="button" id="background_button">Background</button>
         </div>
-
+ 
         <!---------- The screen or layout when clicking the background button-------->
         <div class="customize_background">
           <div class="box" id="box1">
@@ -92,23 +96,23 @@
             <button type="button" id="btn">Skin 3</button>
           </div>
         </div>
-        
-        
-
+       
+       
+ 
         <!-- Exit Customize Button -->
         <button type="button" id="exit_customize">Exit Customize</button>
       </div>
-
-
-
-      
+ 
+ 
+ 
+     
     </main>
     <div id="app"></div>
     <footer>
       <p> Created by Steve,Hamza,Shaheer and Hugh</p>
     </footer>
-	<script src="//cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
     <script type="module" src="/main.js"></script>
-    
+   
   </body>
 </html>

@@ -3,43 +3,43 @@
   --dkClrl: #181818;
   --liClr: whitesmoke;
   --accClr: #0D0D35;
-
+ 
 }
-
-
+ 
+ 
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
  }
-
-
-
+ 
+ 
+ 
 html, body{
   height: 100%;
 }
-
+ 
 body {
-
+ 
   background-color: var(--dkClrl);
   color: var(--liClr);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
+ 
 header,footer{
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 40px 20px;
 }
-
+ 
 main{
   flex: 1;
   display: flex;
 }
-
+ 
 #gameCanvas{
   border: 1px solid #FF0000;
   position: absolute;
@@ -48,9 +48,9 @@ main{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
+  display: block;
   z-index: 1;
-
+ 
 }
  .gameUI{
   width:100%;
@@ -63,325 +63,117 @@ main{
   z-index: 2;
  }
 /*This is the start screen buttons css*/
-
+ 
 .gameUi *{
   text-align: center;
-  margin-top: 5px;
-}
-
-#gameStart{
-
   display: flex;
-
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+}  
+ 
+#gameStart{
+ 
+  display: flex;
+ 
 }
 #gameEnd{
   display: none;
 }
-
-
+ 
+ 
 /*start screen css*/
-
+ 
 #startScreenButton{
   cursor: pointer;
-  position: relative;
+  left :45%;
+ 
+  top: 35%;
+  position: absolute;
   display:flex;
   flex-direction:column;
+  align-items: center;
+   z-index: 2;
+ 
 }
-
+ 
 button {
   margin: 10%;
   width: 100%;
-  height:100%;
-
-
-}
-
-h1{
-  text-align: center;
-  font-size: 50px;
-}
-
-/* This is the css for the leaderboard*/
-#leaderboard {
-        width: 600px;
-        height: auto;
-  display:none;
-}
-
-.row {
-        position: relative;
-        display: block;
-        width: 100%;
-        height: 40px;
-        border-bottom: 1px solid #AFAFAF;
-}
-
-.name {
-        position: relative;
-        display: inline-block;
-        width: 75%;
-        line-height: 45px;
-}
-
-.score {
-        position: relative;
-        display: inline-block;
-        width: 25%;
-}
-
-.login{
-  .fixed-element {
-    display:none;
-    position: fixed;
-    top: 10px;
-    right: 10px;
-}
-
-  /*sHAHEER WORK ON THIS*/
-}
-
-#customize {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  margin-top:50%;
-}
-
-#customize_options {
-  display: none;
-  position: absolute;
-  z-index: 4;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  top: 40%;
-  left: 40%;
-  
- 
-}
-
-
-#customize_background, #customize_capybird{
-  display: none;
-  justify-content: space-around;
-  margin-top: 20px;
-  position: absolute;
-  z-index: 4;
-}
-
-.box{
-  display: none;
-}
-.box img {
-  display: none;
-  width: 200px;
-  height: 150px;
-  object-fit: cover;
-  border: 2px solid #000;
-  margin-bottom: 10px;
-  position: absolute;
-  z-index: 4;
-}
-
-
-#exit_customize {
-  display: none;
-  margin-top: 20px;
-  padding: 15px 30px;
-  font-size: 1.2em;
-  height: 20%;
-  width:50%;
-  position: absolute;
-  z-index: 4;
-}
-
-
-h2{
-  display: none;
-  text-align: center;
-  margin-top:5%;
-  font-size: 30px;
-}
-
-
-
-/*
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  --dkClrl: #181818;
-  --liClr: whitesmoke;
-  --accClr: #0D0D35;
-  
-}
-
-
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
- }
- 
-
-
-html, body{
-  height: 100%;
-} 
-
-body {
-  
-  background-color: var(--dkClrl);
-  color: var(--liClr);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-header,footer{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-}
-
-main{
-  flex: 1;
-  display: flex;
-}
-
-#gameCanvas{
-  border: 1px solid #FF0000;
-  position: absolute;
-  width:70%;
-  height:70%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  z-index: 1;
-
-}
- .gameUI {
-  width:100%;
-  height:100%;
-  
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
- }
-
-
-
-
-#gameStart{
-
-  
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative; 
-
-
-
-}
-#gameEnd{
-  display: none;
-}
-
-
-
-
-#startScreenButton {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px; 
- 
-}
-
-
-button {
-  width: 200px; /* Fixed width for consistency *
-  height: 50px; /* Fixed height for better appearance *
-  margin: 10px 0;
-  background-color: #04AA6D; /* Green *
+  height: 80%;
+  background-color: #04AA6D; /* Green */
   border: none;
   border-radius: 5px;
   color: white;
-  font-size: 18px;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease; /* Smooth transition */
 }
-
-
+ 
 button:hover {
-  background-color: yellow; /* Light green *
-  color: black; /* Change text color on hover *
+  background-color: yellow; /* Light green */
+  color: black; /* Change text color on hover */
 }
-
-
-
+ 
+ 
+ 
 h1{
   text-align: center;
+  margin-bottom: 50%;
   font-size: 50px;
 }
  
-/* This is the css for the leaderboard*
+/* This is the css for the leaderboard*/
 #leaderboard {
-	width: 600px;
-	height: auto;
+  width: 600px;
+  height: auto;
   display:none;
 }
-
+ 
 .row {
-	position: relative;
-	display: flex;
-	width: 100%;
-	height: 40px;
-	border-bottom: 1px solid #AFAFAF;
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 40px;
+  border-bottom: 1px solid #AFAFAF;
   align-items: center;
   justify-content: center;
-
+ 
 }
-
+ 
 .name {
-	position: relative;
-	display: flex;
-	width: 75%;
-	line-height: 45px;
+  position: relative;
+  display: flex;
+  width: 75%;
+  line-height: 45px;
   align-items: center;
   justify-content: center;
 }
-
+ 
 .score {
-	position: relative;
-	display: flex;
+  position: relative;
+  display: flex;
   align-items: center;
   justify-content: center;
-	width: 25%;
+  width: 25%;
 }
-
+ 
 #login {
   display: block;
   position: fixed;
   top: 110px;
   right: 235px;
-
-
-  /*sHAHEER WORK ON THIS*
+ 
+ 
+  /*sHAHEER WORK ON THIS*/
 }
-
-
-
+ 
+/*This is the customize screen css*/
+ 
 #customize{
   display: none;
 }
@@ -394,7 +186,7 @@ h1{
   margin-bottom: 20%;
   width: 20%;
   height: 20%;
-  background-color: #04AA6D; /* Green *
+  background-color: #04AA6D; /* Green */
   border: none;
   border-radius: 5px;
   color: white;
@@ -404,10 +196,10 @@ h1{
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth transition *
+  transition: background-color 0.3s ease; /* Smooth transition */
 }
-
-
+ 
+ 
 #customize_background{
   display: none;
   justify-content: space-around;
@@ -418,7 +210,7 @@ h1{
   justify-content: space-around;
   margin-top: 20px;
 }
-
+ 
 .box img {
   width: 200px;
   height: 150px;
@@ -426,8 +218,8 @@ h1{
   border: 2px solid #000;
   margin-bottom: 10px;
 }
-
-
+ 
+ 
 #exit_customize {
   margin-top: 20px;
   padding: 15px 30px;
@@ -435,11 +227,10 @@ h1{
   height: 20%;
   width:50%;
 }
-
-
+ 
+ 
 h2{
   text-align: center;
   margin-top:5%;
   font-size: 30px;
 }
-*/
