@@ -1,10 +1,8 @@
-
-
 -- Create the database
-CREATE DATABASE IF NOT EXISTS game;
+CREATE DATABASE CapyGame;
 
 -- Switch to the game database
-USE game;
+USE CapyGame;
 
 -- Create the leaderboard table
 CREATE TABLE IF NOT EXISTS leaderboard (
@@ -13,4 +11,3 @@ CREATE TABLE IF NOT EXISTS leaderboard (
     score INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-

@@ -157,6 +157,13 @@ function elementIDSListener(game) {
 
     // Start button
     startButton.addEventListener("click", () => {
+	const userNameInput = document.querySelector("#username").value.trim();
+	if (!userNameInput) {
+		alert("Please enter a username to start the game.");
+		return;
+	}
+
+	localStorage.setItem("player_name", userNameInput);// Save the username locally
 	const gameScene = game.scene.getScene("scene-game");
         gameStart.style.display = "none";
         game.scene.resume("scene-game");
@@ -168,10 +175,10 @@ function elementIDSListener(game) {
 
 // Function to fetch leaderboard data
     function fetchLeaderboard() {
-    	fetch('/api/leaderboard')
+    	fetch('/leaderboard')
         	.then(response => response.json())
         	.then(data => {
-            		const leaderboard = document.querySelector("#leaderboard");
+            		const leaderboard = document.querySelector("#leaderboard-rows");
             		leaderboard.innerHTML = ""; // Clear existing entries
             		data.forEach((entry, index) => {
                 		const row = document.createElement("div");

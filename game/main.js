@@ -115,7 +115,7 @@ class GameScene extends Phaser.Scene {
     this.bgMusic.stop(); // Stop the background music
 
     // Update the Game Over screen
-    const playerName = document.querySelector("#username").value || "Anonymous";
+    const playerName = localStorage.getItem("player_name") || "Anonymous";
     const finalScore = this.score;
     scoreSpan.textContent = finalScore;
     winLoseSpan.textContent = "Lose!!!";
@@ -124,7 +124,7 @@ class GameScene extends Phaser.Scene {
     gameStart.style.display = "none";
 
     // Submit score to the server
-    fetch('/api/submit-score', {
+    fetch('submit-score', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ player_name: playerName, score: finalScore }),
@@ -133,6 +133,7 @@ class GameScene extends Phaser.Scene {
       .then(data => {
         if (data.success) {
           console.log("Score submitted successfully!");
+	  fetchLeaderboard();
         }
       })
       .catch(err => console.error("Error submitting score:", err));
