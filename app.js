@@ -196,23 +196,39 @@ function handleAdminLeaderboard(req, res) {
 function handleDeleteRecord(req, res) {
     if (req.url === '/delete-record' && req.method === 'POST') {
         let body = '';
-        req.on('data', chunk => body += chunk.toString());
+        req.on('data', chunk => (body += chunk.toString())); // Collect the data
         req.on('end', () => {
-            const { player_name } = JSON.parse(body);
-	    console.log('Deleting player:', player_name); // Log the player_name 
+            console.log("Received data:", body); // Log raw data
+
+            // Parse URL-encoded form data
+            const params = new URLSearchParams(body);
+            const player_name = params.get('player_name'); // Extract 'player_name'
+
+            if (!player_name) {
+                res.writeHead(400, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ error: "Invalid input" }));
+                return;
+            }
+
+            console.log("Deleting player:", player_name); // Log the player being deleted
+
+            // Execute DELETE query
             db.query('DELETE FROM leaderboard WHERE player_name = ?', [player_name], (err, result) => {
                 if (err) {
+                    console.error("Error deleting record:", err);
                     res.writeHead(500, { "Content-Type": "application/json" });
-                    res.end(JSON.stringify({ error: 'Failed to delete record' }));
+                    res.end(JSON.stringify({ error: "Failed to delete record" }));
                     return;
                 }
 
-                res.writeHead(302, { 'Location': '/admin-dashboard' });
+                console.log(`Deleted records for player: ${player_name}`);
+                res.writeHead(302, { Location: '/admin-dashboard' }); // Redirect to the admin dashboard
                 res.end();
             });
         });
     } else {
-        return false;
+        res.writeHead(405, { "Content-Type": "application/json" }); // Method Not Allowed
+        res.end(JSON.stringify({ error: "Invalid method" }));
     }
 }
 
