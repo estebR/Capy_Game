@@ -173,6 +173,25 @@ function serveAdminDashboard(req, res) {
     return false;
 }
 
+function handleAdminLeaderboard(req, res) {
+    if (req.method === 'GET') {
+        db.query('SELECT player_name, score FROM leaderboard ORDER BY score DESC LIMIT 10', (err, results) => {
+            if (err) {
+                console.error("Error fetching leaderboard:", err);
+                res.writeHead(500, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ error: 'Database query failed' }));
+                return;
+            }
+            console.log("Leaderboard data fetched from DB:", results); // Log the leaderboard data
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(results));
+        });
+    } else {
+        res.writeHead(405, { "Content-Type": "application/json" }); // Method Not Allowed
+        res.end(JSON.stringify({ error: 'Invalid method' }));
+    }
+}
+
 
 function handleDeleteRecord(req, res) {
     if (req.url === '/delete-record' && req.method === 'POST') {
@@ -201,14 +220,13 @@ function handleDeleteRecord(req, res) {
 // Create the server
 const server = http.createServer((req, res) => {
     console.log(`Received request: ${req.method} ${req.url}`); // Log all requests
-    if (
-        req.url === '/' || 
-        req.url === '/login' || 
-        req.url === '/admin-dashboard'
-    ) {
-        handleLogin(req, res) || 
-        serveStaticFiles(req, res) || 
-        serveAdminDashboard(req, res) || 
+    if (req.url === '/' || req.url === '/login') {
+        handleLogin(req, res) || serveStaticFiles(req, res);
+    } else if (req.url === '/admin-dashboard') {
+        serveAdminDashboard(req, res);
+    } else if (req.url === '/admin-leaderboard') { // Explicitly handle /admin-leaderboard
+        handleAdminLeaderboard(req, res); 
+    } else if (req.url === '/delete-record') {
         handleDeleteRecord(req, res);
     } else if (!handleAPI(req, res)) {
         serveStaticFiles(req, res);
