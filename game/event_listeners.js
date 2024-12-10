@@ -1,3 +1,4 @@
+/*
 // Function to call in main.js
 function elementIDSListener(game){
     //Start and end screens
@@ -123,7 +124,8 @@ restart.addEventListener("click", () => {
 }
 
 export default elementIDSListener;
-/*
+
+*/
 function elementIDSListener(game) {
     // Start and End screens
     const gameStart = document.querySelector("#gameStart");
@@ -255,4 +257,3 @@ function elementIDSListener(game) {
 }
 
 export default elementIDSListener;
-*/
