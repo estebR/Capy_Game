@@ -24,7 +24,7 @@
           <input type="text" id="username" name="username">
 
           <br>
-          <br>
+          <br> 
         </div>
 
       
@@ -41,7 +41,9 @@
         <p>Game over</p>
         <h1>You <span ID="gameWinLoseSpan"></span></h1>
         <h1>Final Score: <span id = gameEndScoreSpan> </span></h1>
-        <button type="button" id="restart">Restart</button>
+        <div id="restartContainer">
+          <button type="button" id="restart">Restart</button>
+        </div>
       </div>
         <!--T------------------------he leaderboard Screen--------------------------->
         <div id="leaderboard" class="gameUI">
@@ -57,7 +59,9 @@
       <!-----------------------------------------------------Cuzotmize screen--------------------------------------------------------------->
       <div id="customize" class="gameUI">
         <h2>Customize Your Game</h2>
-
+        <button type="button" id="exit_customize">Exit Customize</button>
+      </div>
+      
         <!------------------------Inital Screen when Cuztomize button is clickes-->
         <div id="customize_options">
           <button type="button" id="capybird_button">Capybird</button>
@@ -65,32 +69,32 @@
         </div>
 
         <!---------- The screen or layout when clicking the background button-------->
-        <div class="customize_background">
+        <div id="customize_background">
           <div class="box" id="box1">
-            <img src="" alt="Background 1">
+            <img src="images/BG.png" alt="Background 1">
             <button type="button" id="btn">Background 1</button>
           </div>
           <div class="box" id="box2">
-            <img src="" alt="Background 2">
+            <img src="images/BG2.png" alt="Background 2">
             <button type="button" id="btn">background 2</button>
           </div>
           <div class="box" id="box3">
-            <img src="" alt="Background 3">
+            <img src="images/BG3.png" alt="Background 3">
             <button type="button" id="btn">background 3</button>
           </div>
         </div>
         <!---------- The screen or layout when clicking the Capybird button-------->
-        <div class="customize_capybird">
+        <div id="customize_capybird">
           <div class="box" id="box1">
-            <img src="" alt="Cap 1">
+            <img src="images/Capybird.png" alt="Cap 1">
             <button type="button" id="btn">Skin 1</button>
           </div>
           <div class="box" id="box2">
-            <img src="" alt="Cap 2">
+            <img src="images/Capybird2.png" alt="Cap 2">
             <button type="button" id="btn">Skin 2</button>
           </div>
           <div class="box" id="box3">
-            <img src="" alt="Cap 3">
+            <img src="images/Capybird3.png" alt="Cap 3">
             <button type="button" id="btn">Skin 3</button>
           </div>
         </div>
@@ -98,8 +102,7 @@
         
 
         <!-- Exit Customize Button -->
-        <button type="button" id="exit_customize">Exit Customize</button>
-      </div>
+        
 
 
 
