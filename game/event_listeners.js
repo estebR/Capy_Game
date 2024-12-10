@@ -126,7 +126,8 @@ restart.addEventListener("click", () => {
 export default elementIDSListener;
 
 */
-function elementIDSListener(game) {
+function elementIDSListener(game) {  
+    
     // Start and End screens
     const gameStart = document.querySelector("#gameStart");
     const gameEnd = document.querySelector("#gameEnd");
