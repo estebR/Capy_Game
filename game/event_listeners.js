@@ -237,6 +237,7 @@ function elementIDSListener(game) {
         customizeOptions.style.display = "none";
         backgroundScreen.style.display = "none";
         capybirdScreen.style.display = "block";
+
     });
 
     // Exit customize button
@@ -244,6 +245,8 @@ function elementIDSListener(game) {
         customize.style.display = "none";
         customizeOptions.style.display = "none";
         gameStart.style.display = "block";
+        capybirdScreen.style.display="none";
+        backgroundScreen.style.display="none";
     });
     //----------------------------The game end mechanics------------
     restart.addEventListener("click", () => {
