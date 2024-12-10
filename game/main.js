@@ -80,6 +80,7 @@ class GameScene extends Phaser.Scene {
     if (this.target.y >= sizes.height) {
       this.target.setY(0);
       this.target.setX(this.getRandomX());
+      this.target.setVelocityY(speedDown);
     }
  
     // Handle player movement
