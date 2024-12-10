@@ -19,7 +19,7 @@ class GameScene extends Phaser.Scene {
     this.player = null;
     this.cursor = null;
     this.playerSpeed = 175;
-    this.jumpVelocity = -400;
+    this.jumpVelocity = -200;
     this.target = null;
     this.bgMusic = null;
     this.textScore = null;
