@@ -239,7 +239,7 @@ function elementIDSListener(game) {
         capybirdScreen.style.display = "block";
 
     });
-
+ 
     // Exit customize button
     exitCustomizeButton.addEventListener("click", () => {
         customize.style.display = "none";
