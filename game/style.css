@@ -29,7 +29,7 @@ body {
   min-height: 100vh;
   margin: 0; /* To prevent any default spacing */
 }
-
+ 
  
 header,footer{
   display: flex;
@@ -174,11 +174,9 @@ h1{
   position: fixed;
   top: 110px;
   right: 235px;
-
-
-  /*sHAHEER WORK ON THIS*/
-}
-
+ 
+ }
+ 
 /*This is the customize screen css*/
  
 #customize{
@@ -244,15 +242,16 @@ h2{
   margin-top:5%;
   font-size: 30px;
 }
-
+ 
 #restartContainer {
   position: relative;
   z-index: 10;
   top: -50px;
   margin: 0 auto;
-} 
-  
+}
+ 
 #restart {
   display: block;
   cursor: pointer;
 }
+ 

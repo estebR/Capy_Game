@@ -50,10 +50,10 @@ class GameScene extends Phaser.Scene {
  
     this.floor = this.physics.add.staticImage(0, sizes.height  -10, "floor").setOrigin(0, 0);
     this.floor.setDisplaySize(sizes.width, 100);
-
+ 
     //adds collison with floor
     this.physics.add.collider(this.player, this.floor, this.onPlayerTouchFloor, null, this);
-
+ 
     // Set up keyboard input
     this.cursor = this.input.keyboard.createCursorKeys();
  
@@ -116,7 +116,7 @@ class GameScene extends Phaser.Scene {
   onPlayerTouchFloor() {
     this.gameOver(); // End the game when the player hits the floor
   }
-  
+ 
   gameOver() {
     console.log("Game Over");
     this.scene.pause();
