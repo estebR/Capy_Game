@@ -30,6 +30,7 @@ class GameScene extends Phaser.Scene {
     this.load.image("background", "./images/BG.png");
     this.load.image("capybird", "./images/Capybird.png");
     this.load.image("Obstacle", "./images/Obstacle.png");
+    this.load.image("floor", "./images/floor.png");
     this.load.audio("bgMusic", "./Audio/bgmusic.mp3");
   }
  
@@ -42,11 +43,17 @@ class GameScene extends Phaser.Scene {
     canvasImage.setDisplaySize(sizes.width, sizes.height);
  
     // Set up the player (Capybird)
-    this.player = this.physics.add.image(0, 388, "capybird").setOrigin(0, 0);
+    this.player = this.physics.add.image(0, 200, "capybird").setOrigin(0, 0);
     this.player.setDisplaySize(40, 40);
     this.player.body.allowGravity = true;
     this.player.setCollideWorldBounds(true); // Keep the player within bounds
  
+    this.floor = this.physics.add.staticImage(0, sizes.height  -10, "floor").setOrigin(0, 0);
+    this.floor.setDisplaySize(sizes.width, 100);
+
+    //adds collison with floor
+    this.physics.add.collider(this.player, this.floor, this.onPlayerTouchFloor, null, this);
+
     // Set up keyboard input
     this.cursor = this.input.keyboard.createCursorKeys();
  
@@ -106,7 +113,10 @@ class GameScene extends Phaser.Scene {
     this.target.setX(this.getRandomX());
     this.gameOver();
   }
- 
+  onPlayerTouchFloor() {
+    this.gameOver(); // End the game when the player hits the floor
+  }
+  
   gameOver() {
     console.log("Game Over");
     this.scene.pause();
