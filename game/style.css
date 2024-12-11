@@ -184,27 +184,34 @@ h1{
 }
 #customize_options{
   display: none;
+  position: fixed;
   margin-top: 200px;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
   z-index: 4;
+  width: 100%;
+  margin-left: -50px;
 }
 #customize_options button {
   margin-bottom: 20%;
-  width: 20%;
-  height: 20%;
-  background-color: #04AA6D; 
+  margin: 0 10px;
+  width: auto;
+  height: auto;
+  background-color: #04AA6D; /* Green */
   border: none;
   border-radius: 5px;
   color: white;
-  padding: 15px 32px;
-  text-align: center;
+  padding: 15px 51px;
+  box-sizing: border-box;
+  text-align: end;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+  overflow: visible;
   cursor: pointer;
-  transition: background-color 0.3s ease; 
+  transition: background-color 0.3s ease; /* Smooth transition */
 }
- 
  
 #customize_background{
   display: none;
@@ -229,11 +236,16 @@ h1{
  
  
 #exit_customize {
+  position: fixed;
   margin-top: 20px;
   padding: 15px 30px;
   font-size: 1.2em;
-  height: 20%;
-  width:50%;
+  height: auto;
+  width: 200px;
+  bottom: 20px;
+  left: 53%;
+  transform: translateX(-50%);
+  margin-left: -50px;
 }
  
  

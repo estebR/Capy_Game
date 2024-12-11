@@ -28,16 +28,18 @@ class GameScene extends Phaser.Scene {
     this.targetSpeed = speedDown; // Speed of the first obstacle
     this.target2Speed = speedDown; // Speed of the second obstacle
     this.currentSkin = "capybird"; // Default skin
+    this.currentBackground = "background"; // Default background
+
   }
 
   preload() {
     // Load all skins
     this.load.image("capybird", "./images/Capybird.png");
     this.load.image("capybird2", "./images/Capybird2.png");
-    this.load.image("capybird3", "./images/Capybird3.png");
     this.load.image("Obstacle", "./images/Obstacle.png");
     this.load.image("floor", "./images/floor.png");
     this.load.image("background", "./images/BG.png");
+    this.load.image("background2", "./images/BG2.png");
     this.load.audio("bgMusic", "./Audio/bgmusic.mp3");
   }
 
@@ -46,8 +48,8 @@ class GameScene extends Phaser.Scene {
     this.scene.pause();
 
     // Set up the background image
-    const canvasImage = this.add.image(0, 0, "background").setOrigin(0, 0);
-    canvasImage.setDisplaySize(sizes.width, sizes.height);
+    this.backgroundImage = this.add.image(0, 0, "background").setOrigin(0, 0);
+    this.backgroundImage.setDisplaySize(sizes.width, sizes.height);
 
     // Set up the player (Capybird)
     this.player = this.physics.add.image(225, 100, this.currentSkin).setOrigin(0, 0);
@@ -102,6 +104,17 @@ class GameScene extends Phaser.Scene {
         this.player.setDisplaySize(50, 50);
       }
     });
+
+    document.querySelector("#customize_background").addEventListener("click", (event) => {
+      if (event.target.tagName === "BUTTON") { // Check if the clicked element is a button
+        const bgIndex = Array.from(event.target.parentNode.parentNode.children).indexOf(event.target.parentNode);
+        this.currentBackground = bgIndex === 0 ? "background" : `background${bgIndex + 1}`;
+        this.backgroundImage.setTexture(this.currentBackground); // Change the background instantly
+        this.backgroundImage.setDisplaySize(sizes.width, sizes.height); // Ensure correct display size
+      }
+    });
+    
+    
   }
 
   update() {

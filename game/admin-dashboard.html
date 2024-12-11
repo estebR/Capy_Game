@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
     <title>Admin Dashboard</title>
 </head>
 <body>
     <h1>Admin Dashboard</h1>
+    <br><br><br><br>
     <ul id="admin-leaderboard">
         <!-- This will be populated dynamically -->
     </ul>
@@ -16,7 +18,13 @@
         <input type="text" name="player_name" id="player_name" required>
         <button type="submit">Delete</button>
     </form>
-
+    
+    <button id="back-button">Back</button>
     <script src="admin-dashboard.js"></script>  <!-- Make sure JS is linked correctly -->
+    <script>
+        document.getElementById('back-button').addEventListener('click', () => {
+            window.location.href = 'login.html'; // Redirect to login page
+        });
+    </script>
 </body>
 </html>
