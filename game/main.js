@@ -8,7 +8,7 @@ const winLoseSpan = document.querySelector("#gameWinLoseSpan");
 // Object that holds the width and height of the game screen
 const sizes = {
   width: 500,
-  height: 500
+  height: 500,
 };
 
 const speedDown = 300;
@@ -21,19 +21,23 @@ class GameScene extends Phaser.Scene {
     this.playerSpeed = 175;
     this.jumpVelocity = -250; // Reduced jump velocity
     this.target = null;
-    this.target2 = null; // New obstacle
+    this.target2 = null;
     this.bgMusic = null;
     this.textScore = null;
     this.score = 0;
     this.targetSpeed = speedDown; // Speed of the first obstacle
     this.target2Speed = speedDown; // Speed of the second obstacle
+    this.currentSkin = "capybird"; // Default skin
   }
 
   preload() {
-    this.load.image("background", "./images/BG.png");
+    // Load all skins
     this.load.image("capybird", "./images/Capybird.png");
+    this.load.image("capybird2", "./images/Capybird2.png");
+    this.load.image("capybird3", "./images/Capybird3.png");
     this.load.image("Obstacle", "./images/Obstacle.png");
     this.load.image("floor", "./images/floor.png");
+    this.load.image("background", "./images/BG.png");
     this.load.audio("bgMusic", "./Audio/bgmusic.mp3");
   }
 
@@ -46,10 +50,10 @@ class GameScene extends Phaser.Scene {
     canvasImage.setDisplaySize(sizes.width, sizes.height);
 
     // Set up the player (Capybird)
-    this.player = this.physics.add.image(0, 200, "capybird").setOrigin(0, 0);
+    this.player = this.physics.add.image(0, 200, this.currentSkin).setOrigin(0, 0);
     this.player.setDisplaySize(40, 40);
     this.player.body.allowGravity = true;
-    this.player.setCollideWorldBounds(true); // Keep the player within bounds
+    this.player.setCollideWorldBounds(true);
 
     this.floor = this.physics.add.staticImage(0, sizes.height - 10, "floor").setOrigin(0, 0);
     this.floor.setDisplaySize(sizes.width, 100);
@@ -64,19 +68,13 @@ class GameScene extends Phaser.Scene {
     this.bgMusic = this.sound.add("bgMusic", { loop: true });
 
     // Set up the first target (obstacle)
-    this.target = this.physics.add
-      .image(0, 0, "Obstacle")
-      .setOrigin(0, 0)
-      .setDisplaySize(30, 30);
+    this.target = this.physics.add.image(0, 0, "Obstacle").setOrigin(0, 0).setDisplaySize(30, 30);
     this.target.setVelocityY(this.targetSpeed);
     this.physics.add.overlap(this.target, this.player, this.targetHit, null, this);
 
     // Set up the second target (obstacle)
-    this.target2 = this.physics.add
-      .image(0, 0, "Obstacle")
-      .setOrigin(0, 0)
-      .setDisplaySize(30, 30);
-    this.target2.setX(this.getRandomX()); // Start at a random X position
+    this.target2 = this.physics.add.image(0, 0, "Obstacle").setOrigin(0, 0).setDisplaySize(30, 30);
+    this.target2.setX(this.getRandomX());
     this.target2.setVelocityY(this.target2Speed);
     this.physics.add.overlap(this.target2, this.player, this.targetHit2, null, this);
 
@@ -93,6 +91,16 @@ class GameScene extends Phaser.Scene {
         this.textScore.setText(`Score: ${this.score}`);
       },
       loop: true,
+    });
+
+    // Add event listener for skin change
+    document.querySelector("#customize_capybird").addEventListener("click", (event) => {
+      if (event.target.id === "btn") {
+        const skinIndex = Array.from(event.target.parentNode.parentNode.children).indexOf(event.target.parentNode);
+        this.currentSkin = skinIndex === 0 ? "capybird" : `capybird${skinIndex + 1}`;
+        this.player.setTexture(this.currentSkin); // Change the player's texture instantly
+        this.player.setDisplaySize(50, 50);
+      }
     });
   }
 
@@ -142,13 +150,13 @@ class GameScene extends Phaser.Scene {
   }
 
   onPlayerTouchFloor() {
-    this.gameOver(); // End the game when the player hits the floor
+    this.gameOver();
   }
 
   gameOver() {
     console.log("Game Over");
     this.scene.pause();
-    this.bgMusic.stop(); // Stop the background music
+    this.bgMusic.stop();
 
     // Update the Game Over screen
     const playerName = localStorage.getItem("player_name") || "Anonymous";
@@ -160,19 +168,18 @@ class GameScene extends Phaser.Scene {
     gameStart.style.display = "none";
 
     // Submit score to the server
-    fetch('submit-score', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("submit-score", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ player_name: playerName, score: finalScore }),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         if (data.success) {
           console.log("Score submitted successfully!");
-          fetchLeaderboard();
         }
       })
-      .catch(err => console.error("Error submitting score:", err));
+      .catch((err) => console.error("Error submitting score:", err));
 
     this.score = 0; // Reset the score
   }
