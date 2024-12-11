@@ -84,5 +84,38 @@ body {
     border-radius: 10px; /* Optional: Add rounded corners */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow */
   }
-  
-  
+
+#back-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #6c757d; /* Green button */
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}  
+#admin-leaderboard {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #f4f4f4;;
+    border: 2px solid var(--liClr); /* Add thicker border for the box */
+    border-radius: 8px;
+    overflow: hidden;
+    color: var(--liClr);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add shadow for a 3D effect */
+}
+
+#admin-leaderboard li {
+    padding: 8px 18px;
+    border-bottom: 1px solid #444; /* Separator between rows */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+}}  
+

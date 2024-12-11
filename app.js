@@ -194,40 +194,42 @@ function handleAdminLeaderboard(req, res) {
  
  
 function handleDeleteRecord(req, res) {
-    if (req.url === '/delete-record' && req.method === 'POST') {
+    if (req.method === 'POST' && req.url === '/delete-record') {
         let body = '';
-        req.on('data', chunk => (body += chunk.toString()));
+
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
         req.on('end', () => {
-            console.log("Received data:", body);
- 
             const params = new URLSearchParams(body);
-            const player_name = params.get('player_name');
- 
-            if (!player_name) {
-                res.writeHead(400, { "Content-Type": "application/json" });
-                res.end(JSON.stringify({ error: "Invalid input" }));
+            const playerName = params.get('player_name');
+
+            if (!playerName) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, error: 'Player name is required' }));
                 return;
             }
- 
-            console.log("Deleting player:", player_name);
- 
-            db.query('DELETE FROM leaderboard WHERE player_name = ?', [player_name], (err, result) => {
+
+            const query = 'DELETE FROM leaderboard WHERE player_name = ?';
+            db.query(query, [playerName], (err, result) => {
                 if (err) {
-                    console.error("Error deleting record:", err);
-                    res.writeHead(500, { "Content-Type": "application/json" });
-                    res.end(JSON.stringify({ error: "Failed to delete record" }));
-                    return;
+                    console.error('Error deleting record:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, error: 'Database error' }));
+                } else {
+                    console.log(`Deleted ${result.affectedRows} record(s) for player_name=${playerName}`);
+                    
+                    // Redirect to login screen
+                    res.writeHead(302, { Location: '/admin-dashboard.html' });
+                    res.end();
                 }
- 
-                console.log(`Deleted records for player: ${player_name}`);
-                res.writeHead(200, { "Content-Type": "application/json" });
-                res.end(JSON.stringify({ success: true })); // Respond with success
             });
         });
-    } else {
-        res.writeHead(405, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ error: "Invalid method" }));
+
+        return true;
     }
+    return false;
 }
  
  
