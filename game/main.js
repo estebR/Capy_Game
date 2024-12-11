@@ -50,7 +50,7 @@ class GameScene extends Phaser.Scene {
     canvasImage.setDisplaySize(sizes.width, sizes.height);
 
     // Set up the player (Capybird)
-    this.player = this.physics.add.image(0, 200, this.currentSkin).setOrigin(0, 0);
+    this.player = this.physics.add.image(225, 100, this.currentSkin).setOrigin(0, 0);
     this.player.setDisplaySize(40, 40);
     this.player.body.allowGravity = true;
     this.player.setCollideWorldBounds(true);
@@ -162,7 +162,7 @@ class GameScene extends Phaser.Scene {
     const playerName = localStorage.getItem("player_name") || "Anonymous";
     const finalScore = this.score;
     scoreSpan.textContent = finalScore;
-    winLoseSpan.textContent = "Lose!!!";
+    winLoseSpan.textContent = "Game Over";
 
     gameEnd.style.display = "flex";
     gameStart.style.display = "none";
