@@ -221,7 +221,7 @@ function handleDeleteRecord(req, res) {
                     console.log(`Deleted ${result.affectedRows} record(s) for player_name=${playerName}`);
                     
                     // Redirect to login screen
-                    res.writeHead(302, { Location: '/' });
+                    res.writeHead(302, { Location: '/admin-dashboard.html' });
                     res.end();
                 }
             });
