@@ -246,11 +246,22 @@ h2{
 #restartContainer {
   position: relative;
   z-index: 10;
-  top: -50px;
+  top: 100px;
   margin: 0 auto;
 } 
   
 #restart {
   display: block;
   cursor: pointer;
+}
+#finalScore {
+  position: absolute;
+  top: 30%; /* Adjust this value to move it into the desired position */
+  left: 45%;
+  text-align: row;
+  transform: translateX(-50%);
+  font-size: 2rem; /* Ensure the size matches the design */
+  z-index: 4; /* Ensure it's above the background but not overlapping other elements */
+  text-align: center;
+  display: inline-block;
 }
